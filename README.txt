@@ -1,3 +1,9 @@
+NOTES
+	The regular expressions for recognizing tokens in the scanner should be correct.  
+	It's the grammar that needs work.  Right now if you run it it will print
+	out every time it recognizes a token, and the parser occassionally prints
+	out that it recognizes a line of any text.
+
 INCLUDED FILES
 
 makefile		'make' creates svsh, which calls the scanner/parser.
