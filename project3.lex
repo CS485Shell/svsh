@@ -13,6 +13,14 @@ rules
 %%
 
 main function defined in the main.c file
+
+using only one keyword was getting too confusing in the .y file
+keyword		"defprompt"|"cd"|"listjobs"|"bye"|"run"|"assignto"|"<bg>"
+{keyword}	{yylval.str_val = (char*) malloc(yyleng); 
+		strncpy(yylval.str_val, yytext, yyleng); 
+		printf("Scanner found keyword: %s!", yytext); 
+		return KEYWORD;}
+
  */
 
 %{
@@ -23,7 +31,13 @@ void yyerror(char*);
 
 digit		[0-9]
 alpha		[a-zA-Z]
-keyword		"defprompt"|"cd"|"listjobs"|"bye"|"run"|"assignto"|"<bg>"
+defprompt	"defprompt"
+cd		"cd"
+listjobs	"listjobs"
+bye		"bye"
+run		"run"
+assignto	"assignto"
+bg		"<bg>"
 variable	$([0-9A-Za-z\S_])*
 string 		\"[^\"\r\n]*\"
 metacharacter	"#"|"="
@@ -31,27 +45,57 @@ word		([^\r\n \t#])*
 newline		"\n"|"\r"
 %%
 
-{newline}	{printf("Found a newline character!");
+{newline}	{printf("Scanner found a newline character!\n");
 		return 0;}		
+{defprompt}	{printf("Scanner found defprompt!\n");
+		yylval.str_val = (char*) malloc(yyleng); 
+		strncpy(yylval.str_val, yytext, yyleng); 
+		return DEFPROMPT;}
 
-{keyword}	{yylval.str_val = (char*) malloc(yyleng+1); 
+{cd}		{printf("Scanner found cd!\n");
+		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		printf("Found keyword: %s!", yytext); 
-		return KEYWORD;}
-{variable}	{yylval.str_val = (char*) malloc(yyleng+1); 
+		return DEFPROMPT;}
+
+{listjobs} 	{printf("Scanner found listjobs!\n");
+		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		printf("Found variable: %s!", yytext); 
+		return DEFPROMPT;}
+
+{bye} 		{printf("Scanner found bye!\n");
+		yylval.str_val = (char*) malloc(yyleng); 
+		strncpy(yylval.str_val, yytext, yyleng); 
+		return DEFPROMPT;}
+
+{run}		{printf("Scanner found run!\n");
+		yylval.str_val = (char*) malloc(yyleng); 
+		strncpy(yylval.str_val, yytext, yyleng); 
+		return DEFPROMPT;}
+
+{assignto}	{printf("Scanner found assignto!\n");
+		yylval.str_val = (char*) malloc(yyleng); 
+		strncpy(yylval.str_val, yytext, yyleng); 
+		return DEFPROMPT;}
+
+{bg}		{printf("Scanner found <bg>!\n");
+		yylval.str_val = (char*) malloc(yyleng); 
+		strncpy(yylval.str_val, yytext, yyleng); 
+		return DEFPROMPT;}
+
+{variable}	{yylval.str_val = (char*) malloc(yyleng); 
+		strncpy(yylval.str_val, yytext, yyleng); 
+		printf("Scanner found variable: %s!\n", yytext); 
 		return VARIABLE;}
-{string}	{yylval.str_val = (char*) malloc(yyleng+1); 
+{string}	{yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		printf("Found string: %s!", yytext); 
+		printf("Scanner found string: %s!\n", yytext); 
 		return STRING;}
 {metacharacter}	{yylval.int_token = *(yytext); 
-		printf("Found the metacharacter: %s!", yytext); 
+		printf("Scanner found the metacharacter: %s!\n", yytext); 
 		return METACHARACTER;}
-{word}		{yylval.str_val = (char*) malloc(yyleng+1); 
+{word}		{yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		printf("Found the word: %s!", yytext); 
+		printf("Scanner found the word: %s!\n", yytext); 
 		return WORD;}
 %%
 

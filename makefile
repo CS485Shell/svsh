@@ -1,5 +1,5 @@
 OBJECTS	= main.o parser.o scanner.o
-HEADERS = project3.tab.h
+HEADERS = project3.tab.h functions.h
 CC 	= gcc
 CFLAGS	= -g
 
