@@ -12,7 +12,7 @@ extern void yyerror(char*);
 %}
 
 %union{
-    int int_token;
+    char int_token;
     char* str_val;
 }
 	
@@ -22,12 +22,22 @@ extern void yyerror(char*);
 %start parsetree
 %%
 
-parsetree:	lines;
-lines:		lines anytext | anytext;
+parsetree:	line;
+line:		comment | run_command;
 
-anytext:	WORD
-		| KEYWORD
-		| STRING
-		| VARIABLE
-		| METACHARACTER {printf("Parsed a line of any text");};
+comment:	METACHARACTER anytext
+			{if($1 == 35)printf("Found a comment: %d", $1);};
+
+anytext:	anytext WORD | WORD
+		| anytext KEYWORD | KEYWORD
+		| anytext STRING | STRING
+		| anytext VARIABLE | VARIABLE
+		| anytext METACHARACTER | METACHARACTER
+			{printf("Parsed a line of any text");};
+
+run_command:	KEYWORD command arg_list;
+command:	WORD;
+arg_list:	arg_list argument | argument;
+argument:	WORD | STRING | VARIABLE;
+
 %%
