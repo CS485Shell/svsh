@@ -1,4 +1,9 @@
 NOTES
+10/4/14
+	The scanner and parser work more closely together than I thought, the parser will just call the scanner each time.  Therefore there isn't any need to call the scanner at any point in the main.c file.
+	The parser now recognizes comment lines and the scanner appropriately stops when it encounters a newline character.  The parser appropriately stops when it reads end of file (Ctrl-D).  The parser still prints out an error message and stops completely when it doesn't recognize input.
+
+10/1/14
 	The regular expressions for recognizing tokens in the scanner should be correct.  
 	It's the grammar that needs work.  Right now if you run it it will print
 	out every time it recognizes a token, and the parser occassionally prints
@@ -11,4 +16,4 @@ project3.lex		Contains the rules and definitions of the scanner.
 testfile		Just some sample possible lines to feed the scanner.
 project3.y		Should contain the grammar rules and token definitions.
 			Right now the parser recognizes some any text lines.
-main.c			Calls yylex(), the scanner, then yyparse(), the parser.	
+main.c			Calls yyparse(), the parser.
