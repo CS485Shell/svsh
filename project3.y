@@ -46,6 +46,12 @@ run_command:	LISTJOBS
 		 {printf("Parser got: %s should be %s\n", $1, $2);}
 		|CD WORD
 		 {printf("Parser got: %s to %s\n", $1, $2);}
+		|VARIABLE METACHARACTER STRING
+		 {printf("Parser got: %s %c %s\n", $1, $2, $3);
+		  if($2 == '=')printf("An assignment\n");
+		 }
+		|ASSIGNTO VARIABLE filename arg_list
+		 {printf("Parser got an assignto line\n");}
 		|run
 		;
 
