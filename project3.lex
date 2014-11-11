@@ -1,26 +1,6 @@
 /* Project 3
  * This is the .lex file which describes a scanner that flex will construct	
- * The finished version shouldn't print stuff everywhere 
- * 
- * The stuff in %{ %} gets pasted right into the .c file:
-%{
-#include <cstdlib.h>
-#include "y.tab.h"
-%}
-definitions
-%%
-rules
-%%
-
-main function defined in the main.c file
-
-using only one keyword was getting too confusing in the .y file
-keyword		"defprompt"|"cd"|"listjobs"|"bye"|"run"|"assignto"|"<bg>"
-{keyword}	{yylval.str_val = (char*) malloc(yyleng); 
-		strncpy(yylval.str_val, yytext, yyleng); 
-		printf("Scanner found keyword: %s!", yytext); 
-		return KEYWORD;}
-
+ * Uncomment the printfs to see what gets scanned
  */
 
 %{
@@ -45,6 +25,8 @@ word		([^\r\n \t#])*
 newline		"\n"|"\r"
 %%
 
+<<EOF>>		{return BYE;}
+
 {newline}	{printf("Scanner found a newline character!\n");
 		return 0;}		
 {defprompt}	{printf("Scanner found defprompt!\n");
@@ -55,44 +37,47 @@ newline		"\n"|"\r"
 {cd}		{printf("Scanner found cd!\n");
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		return DEFPROMPT;}
+		return CD;}
 
 {listjobs} 	{printf("Scanner found listjobs!\n");
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		return DEFPROMPT;}
+		return LISTJOBS;}
 
 {bye} 		{printf("Scanner found bye!\n");
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		return DEFPROMPT;}
+		return BYE;}
 
 {run}		{printf("Scanner found run!\n");
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		return DEFPROMPT;}
+		return RUN;}
 
 {assignto}	{printf("Scanner found assignto!\n");
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		return DEFPROMPT;}
+		return ASSIGNTO;}
 
 {bg}		{printf("Scanner found <bg>!\n");
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		return DEFPROMPT;}
+		return BG;}
 
 {variable}	{yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		printf("Scanner found variable: %s!\n", yytext); 
 		return VARIABLE;}
+
 {string}	{yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		printf("Scanner found string: %s!\n", yytext); 
 		return STRING;}
+
 {metacharacter}	{yylval.int_token = *(yytext); 
 		printf("Scanner found the metacharacter: %s!\n", yytext); 
 		return METACHARACTER;}
+
 {word}		{yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		printf("Scanner found the word: %s!\n", yytext); 

@@ -40,7 +40,10 @@ anytext:	anytext WORD | WORD
 		| anytext METACHARACTER | METACHARACTER
 		;
 
-run_command:	LISTJOBS
+run_command:	BYE
+		 {printf("Parser got: %s\n", $1);
+		  exit(0);}
+		|LISTJOBS
 		 {printf("Parser got: %s\n", $1);}
 		|DEFPROMPT STRING
 		 {printf("Parser got: %s should be %s\n", $1, $2);}
@@ -55,8 +58,14 @@ run_command:	LISTJOBS
 		|run
 		;
 
-run:		RUN filename arg_list
+run:		RUN filename
+		 {printf("Parser saw a run without arguments, BG option\n");}
+		|RUN filename BG
+		 {printf("Parser saw a run with BG option, no arguments\n");}
+		|RUN filename arg_list
+		 {printf("Parser saw a run without BG option\n");}
 		| RUN filename arg_list BG
+		 {printf("Parser saw a run with a BG option\n");}
 		;
 filename:	WORD;
 arg_list:	arg_list argument | argument;
