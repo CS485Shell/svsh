@@ -44,13 +44,13 @@ int cmdInput()
     command = strtok(str, " ");
     cout << command << endl;
     
-    if (strcmp(str, "bye") == 0) //Exit on "bye" command
-    //if (command == "bye")
+    //if (strcmp(str, "bye") == 0) //Exit on "bye" command
+    if (command == "bye")
     {
         return 1;
     }
-    else if (cin.eof()) //Exit on EOF character CTRL+D
-    //if (cin.eof())
+    //else if (cin.eof()) //Exit on EOF character CTRL+D
+    if (cin.eof())
     {
         return 2;
     }
@@ -58,61 +58,61 @@ int cmdInput()
     /* Put a job in the background.  If the cont argument is true, send
    the process group a SIGCONT signal to wake it up.  */
     
-    while (strcmp(str, "bye") != 0)
-    //while (command != "bye")
+    //while (strcmp(str, "bye") != 0)
+    while (command != "bye")
     {
-            if (strcmp(str, "#") == 0)
-        //if (command == "#")
-            {
-                // #anytext
+    	//if (strcmp(str, "#") == 0)
+	if (command == "#")
+        {
+        	// #anytext
                 // Comments
                 // Any text after the # will be ignored.
                 printf("%s\n", str[1]);
                 printf("Comment Section.\n");
-            }
-            else if (strcmp(str, "defprompt") == 0)
-        //else if (command == "defprompt")
-            {
-                // defprompt prompt
+        }
+        //else if (strcmp(str, "defprompt") == 0)
+        else if (command == "defprompt")
+        {
+        	// defprompt prompt
                 // Set the shell prompt to prompt. 
                 // The default prompt should be ``svsh > ''.
                 printf("defprompt stuff here.\n");
                 //prompt = str;
-            }
-            //else if (strcmp(str, "cd") == 0)
+        }
+        //else if (strcmp(str, "cd") == 0)
         else if (command == "cd")
-            {
+        {
                 // cd directory_name
                 
                 printf("cd has been called to directory_name. \n");
-            }
-            else if (strcmp(str, "variable_name") == 0)
-        //else if (command == "variable_name")
-            {
-                // variable_name = variable_def
+        }
+        //else if (strcmp(str, "variable_name") == 0)
+        else if (command == "variable_name")
+        {
+        	// variable_name = variable_def
                 // sets the variable specified by variable_name to variable_def.
                 cout << "var stuff here.\n";
-            }
-            else if (strcmp(str, "listjobs") == 0)
-        //else if (command == "listjobs")
-            {
+        }
+        //else if (strcmp(str, "listjobs") == 0)
+        else if (command == "listjobs")
+        {
                 // List all jobs running in the background
                 printf("listjobs call has been made. \n");
-            }
-            else if (strcmp(str, "bye") == 0) //Exit on "bye" command
-            //if (command == "bye")
-            {
+        }
+        //else if (strcmp(str, "bye") == 0) //Exit on "bye" command
+        if (command == "bye")
+        {
                 printf("Exiting svsh normally via \"bye\" command.");
                 return 1;
-            }
-            else
-            {
-                    cout << "Error: Unknown Command.\n";
-            }
-            printf("%s > ", prompt);
-            fgets(str, sizeof(str), stdin);
+        }
+        else
+        {
+        	cout << "Error: Unknown Command.\n";
+        }
+        printf("%s > ", prompt);
+        fgets(str, sizeof(str), stdin);
             
-            str[strlen(str) - 1] = '\0';
+        str[strlen(str) - 1] = '\0';
     }
 
 }
