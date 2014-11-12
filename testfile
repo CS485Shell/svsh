@@ -1,5 +1,4 @@
-cd cd directory_1 defprompt	"a string	with whitespace and #char"
+cd directory_1
 /bin/cat file1 file2 file3
-ls -lt #
-/bin/wc file1 = <bg> blah#blah
-$somevariable randomjunk	$another_variable
+ls -lt
+/bin/wc file1

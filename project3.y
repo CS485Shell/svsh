@@ -6,7 +6,7 @@
 
 %{
 #include "functions.h"
-extern char prompt[];
+extern char* prompt;
 extern int yylex();
 extern void yyerror(char*);
 %}
@@ -26,7 +26,12 @@ parsetree:	line;
 line:		comment | run_command;
 
 comment:	METACHARACTER anytext
-		 {if($1 == 35)printf("Found a comment: %d\n", $1);}; 
+		 {if($1 == 35){
+		      if(Debug)printf("Found a comment: %d\n", $1);
+		  
+		      if(Showtokens)printf("Token usage = comment");
+		  }
+		 }; 
 anytext:	anytext WORD | WORD
 		| anytext DEFPROMPT | DEFPROMPT
 		| anytext CD | CD
@@ -41,31 +46,45 @@ anytext:	anytext WORD | WORD
 		;
 
 run_command:	BYE
-		 {printf("Parser got: %s\n", $1);
+		 {if(Debug)printf("Parser got: %s\n", $1);
+		  if(Showtokens)printf("Usage = cmd\n");
 		  exit(0);}
 		|LISTJOBS
-		 {printf("Parser got: %s\n", $1);}
+		 {if(Debug)printf("Parser got: %s\n", $1);
+		  if(Showtokens)printf("Usage = cmd\n");
+		 }
 		|DEFPROMPT STRING
-		 {printf("Parser got: %s should be %s\n", $1, $2);}
+		 {if(Debug)printf("Parser got: %s should be %s\n", $1, $2);
+		  if(Showtokens)printf("Usage = cmd\n");
+		    strncpy(prompt, $2, MAXSTRINGLENGTH);
+		 }
 		|CD WORD
-		 {printf("Parser got: %s to %s\n", $1, $2);}
+		 {if(Debug)printf("Parser got: %s to %s\n", $1, $2); 
+		  if(Showtokens)printf("Usage = cmd\n");
+		 }
+		|CD VARIABLE
+		 {if(Debug)printf("Parser got: %s to %s\n", $1, $2); 
+		  if(Showtokens)printf("Usage = cmd\n");
+		 }
 		|VARIABLE METACHARACTER STRING
-		 {printf("Parser got: %s %c %s\n", $1, $2, $3);
-		  if($2 == '=')printf("An assignment\n");
+		 {if(Debug)printf("Parser got: %s %c %s\n", $1, $2, $3);
+		  if(Showtokens)printf("Usage = cmd\n");
 		 }
 		|ASSIGNTO VARIABLE filename arg_list
-		 {printf("Parser got an assignto line\n");}
+		 {if(Debug)printf("Parser got an assignto line\n");
+		  if(Showtokens)printf("Usage = cmd\n");
+		 }
 		|run
 		;
 
 run:		RUN filename
-		 {printf("Parser saw a run without arguments, BG option\n");}
+		 {if(Debug)printf("Parser saw a run without arguments, BG option\n");}
 		|RUN filename BG
-		 {printf("Parser saw a run with BG option, no arguments\n");}
+		 {if(Debug)printf("Parser saw a run with BG option, no arguments\n");}
 		|RUN filename arg_list
-		 {printf("Parser saw a run without BG option\n");}
-		| RUN filename arg_list BG
-		 {printf("Parser saw a run with a BG option\n");}
+		 {if(Debug)printf("Parser saw a run without BG option\n");}
+		|RUN filename arg_list BG
+		 {if(Debug)printf("Parser saw a run with a BG option\n");}
 		;
 filename:	WORD;
 arg_list:	arg_list argument | argument;

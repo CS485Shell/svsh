@@ -5,6 +5,7 @@
 
 %{
 #include <stdlib.h>
+#include "functions.h"
 #include "project3.tab.h"
 void yyerror(char*);
 %}
@@ -25,63 +26,76 @@ word		([^\r\n \t#])*
 newline		"\n"|"\r"
 %%
 
-<<EOF>>		{return BYE;}
+<<EOF>>		{yylval.str_val = "bye";
+		 return BYE;}
 
-{newline}	{printf("Scanner found a newline character!\n");
+{newline}	{if(Debug)printf("Scanner found a newline character!\n");
 		return 0;}		
-{defprompt}	{printf("Scanner found defprompt!\n");
+{defprompt}	{if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
+		if(Debug)printf("Scanner found defprompt!\n");
+		if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		return DEFPROMPT;}
 
-{cd}		{printf("Scanner found cd!\n");
+{cd}		{if(Debug)printf("Scanner found cd!\n");
+		if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		return CD;}
 
-{listjobs} 	{printf("Scanner found listjobs!\n");
+{listjobs} 	{if(Debug)printf("Scanner found listjobs!\n");
+		if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		return LISTJOBS;}
 
-{bye} 		{printf("Scanner found bye!\n");
+{bye} 		{if(Debug)printf("Scanner found bye!\n");
+		if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		return BYE;}
 
-{run}		{printf("Scanner found run!\n");
+{run}		{if(Debug)printf("Scanner found run!\n");
+		if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		return RUN;}
 
-{assignto}	{printf("Scanner found assignto!\n");
+{assignto}	{if(Debug)printf("Scanner found assignto!\n");
+		if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		return ASSIGNTO;}
 
-{bg}		{printf("Scanner found <bg>!\n");
+{bg}		{if(Debug)printf("Scanner found <bg>!\n");
+		if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
 		return BG;}
 
 {variable}	{yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		printf("Scanner found variable: %s!\n", yytext); 
+		if(Debug)printf("Scanner found variable: %s!\n", yytext); 
+		if(Showtokens)printf("Token type = variable\tToken = %s\t\t", yytext);
 		return VARIABLE;}
 
 {string}	{yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		printf("Scanner found string: %s!\n", yytext); 
+		if(Debug)printf("Scanner found string: %s!\n", yytext); 
+		if(Showtokens)printf("Token type = string\tToken = %s\t\t", yytext);
 		return STRING;}
 
 {metacharacter}	{yylval.int_token = *(yytext); 
-		printf("Scanner found the metacharacter: %s!\n", yytext); 
+		if(Debug)printf("Scanner found the metacharacter: %s!\n", yytext); 
+		if(Showtokens)printf("Token type = metachar\tToken = %s\t\t", yytext);
 		return METACHARACTER;}
 
 {word}		{yylval.str_val = (char*) malloc(yyleng); 
 		strncpy(yylval.str_val, yytext, yyleng); 
-		printf("Scanner found the word: %s!\n", yytext); 
-		return WORD;}
+		if(Debug)printf("Scanner found the word: %s!\n", yytext); 
+		if(Showtokens)printf("Token type = word\tToken = %s\t\t", yytext);
+return WORD;}
 %%
 
 void yyerror(char* str) {printf("Parse Error: \n%s\n",str);}

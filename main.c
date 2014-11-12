@@ -1,13 +1,18 @@
 #include "functions.h"
 
-char *prompt = "svsh > ";
+int Debug = 0;
+int Showtokens = 1;
+char *prompt;
 
 
 main(){
-//	yylex();  	//the scanner
+	prompt = malloc(MAXSTRINGLENGTH);
+	strncpy(prompt, "svsh >", MAXSTRINGLENGTH);
 	while(1){
+				
 		printf("%s", prompt);
 		yyparse();	//the parser
+		printf("\n");
 	}
 	return 0;
 }
