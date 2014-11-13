@@ -12,3 +12,5 @@
 
 void userCmd(ARGL *argl, char *input, char *result);
 
+
+#endif /* SVSH_H */
