@@ -10,6 +10,38 @@ char** input_argv;
 //This symbol table is a linked list of struct symrec's (symbol records)
 symrec *sym_table = NULL;
 
+//Push the current list down, adding a new record to the front of the table
+symrec* pushsym (sym_type, sym_value, sym_usage)
+	int sym_type;
+	char *sym_value;
+	char *sym_usage;
+{
+	//Create a pointer for the new entry
+	symrec *ptr;
+	ptr = (symrec *)malloc(sizeof(symrec));
+	//Assign the type (token types are ints)
+	ptr->type = sym_type;
+	//Assign the value (all tokens are strings)
+	ptr->value = (char *)malloc(MAXSTRINGLENGTH);
+	strncpy(ptr->value, sym_value, strlen(sym_value));//MAXSTRINGLENGTH);
+	//Assign the usage (run etc.)
+	ptr->usage = (char *)malloc(MAXSTRINGLENGTH);
+	strncpy(ptr->usage, sym_usage, strlen(sym_usage));//MAXSTRINGLENGTH);
+	//Put the pointer at the front end of the list
+	ptr->next = sym_table;
+	/*if(sym_table == NULL){
+		sym_table = ptr;
+	} else{	
+		symrec* ptr2 = sym_table;
+		while(ptr2->next != NULL){
+			ptr2 = ptr2->next;
+		}
+		ptr2->next = ptr;
+	}*/
+	return ptr;
+}
+
+//Put a new record at the end of the list of symbols
 symrec* putsym (sym_type, sym_value, sym_usage)
 	int sym_type;
 	char *sym_value;
@@ -22,13 +54,11 @@ symrec* putsym (sym_type, sym_value, sym_usage)
 	ptr->type = sym_type;
 	//Assign the value (all tokens are strings)
 	ptr->value = (char *)malloc(MAXSTRINGLENGTH);
-	strncpy(ptr->value, sym_value, MAXSTRINGLENGTH);
+	strncpy(ptr->value, sym_value, strlen(sym_value));//MAXSTRINGLENGTH);
 	//Assign the usage (run etc.)
 	ptr->usage = (char *)malloc(MAXSTRINGLENGTH);
-	strncpy(ptr->usage, sym_usage, MAXSTRINGLENGTH);
-	//The next pointer is a pointer to another entry
-	//ptr->next = (struct symrec *)sym_table;
-	//sym_table = ptr;
+	strncpy(ptr->usage, sym_usage, strlen(sym_usage));//MAXSTRINGLENGTH);
+	//Put the pointer at the end of the list
 	ptr->next = NULL;
 	if(sym_table == NULL){
 		sym_table = ptr;
@@ -66,23 +96,21 @@ void free_table(){
 		return;
 	while(sym_table != NULL){
 		symrec *ptr = sym_table;
-		symrec *ptr2;
-		if(ptr != NULL)ptr2 = sym_table->next;
-		while(ptr2->next != NULL){
+		if(ptr->next == NULL){
+			//free(ptr->value);
+			//free(ptr->usage);
+			free(ptr);
+			sym_table = NULL;
+			return;
+		}
+		while(ptr->next->next != NULL){
 			ptr = ptr->next;
-			ptr2 = ptr2->next;
 		}
 		
-		free(ptr2->value);
-		free(ptr2->usage);
-		free(ptr2);
+		//free(ptr->next->value);
+		//free(ptr->next->usage);
+		free(ptr->next);
 		ptr->next = NULL;
-		if(sym_table->next == NULL){
-			free(sym_table->value);
-			free(sym_table->usage);
-			free(sym_table);
-			sym_table = NULL;
-		}
 	}
 }
 

@@ -14,7 +14,8 @@ struct symrec
 typedef struct symrec symrec; 	/* typdef so the type is known elsewhere */
 extern symrec *sym_table;	/* (main) pointer to the symbol table */
 
-symrec *putsym();		/* puts a new symbol table entry */
+symrec *pushsym();		/* pushes a new symbol table entry on the front of the list */
+symrec *putsym();		/* puts a new symbol table entry at the end*/
 symrec *getsym();		/* gets a symbol table entry */
 
 

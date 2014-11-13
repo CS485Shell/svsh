@@ -51,46 +51,62 @@ anytext:	anytext WORD | WORD
 run_command:	BYE
 		 {if(Debug)printf("Parser got: %s\n", $1);
 		  //if(Showtokens)printf("Usage = bye\n");
+		  sym_table = putsym(BYE, $1, "bye");
 		  if(Showtokens)printTokens();
 		  exit(0);}
 		|LISTJOBS
 		 {if(Debug)printf("Parser got: %s\n", $1);
 		  //if(Showtokens)printf("Usage = listjobs\n");
+		  sym_table = putsym(LISTJOBS, $1, "listjobs");
 		  if(Showtokens)printTokens();
 		  input_argc = 1;
 		 }
 		|DEFPROMPT STRING
 		 {if(Debug)printf("Parser got: %s should be %s\n", $1, $2);
 		  //if(Showtokens)printf("Usage = defprompt\n");
+		  sym_table = putsym(DEFPROMPT, $1, "defprompt");
+		  sym_table = putsym(STRING, $2, "prompt");
 		  if(Showtokens)printTokens();
   		  strncpy(prompt, $2, MAXSTRINGLENGTH);
 		  input_argc = 1;
 		 }
 		|CD WORD
 		 {if(Debug)printf("Parser got: %s to %s\n", $1, $2); 
-		  //if(Showtokens)printf("Usage = cd\n");
-		  char* usage1 = "cd";
-		  char* usage2 = "directory_name";
-		  sym_table = putsym(CD, $1, usage1);
-		  sym_table = putsym(WORD, $2, usage2);
+		  //if(Showtokens)printf("Usage = cd\n"); 
+		  sym_table = putsym(CD, $1, "cd");
+		  sym_table = putsym(WORD, $2, "directory_name");
 		  if(Showtokens)printTokens();
 		  input_argc = 1;
 		 }
 		|CD VARIABLE
 		 {if(Debug)printf("Parser got: %s to %s\n", $1, $2); 
 		  //if(Showtokens)printf("Usage = cd\n");
+		  sym_table = putsym(CD, $1, "cd");
+		  sym_table = putsym(CD, $2, "directory_name");
 		  if(Showtokens)printTokens();
 		  input_argc = 1;
 		 }
 		|VARIABLE METACHARACTER STRING
 		 {if(Debug)printf("Parser got: %s %c %s\n", $1, $2, $3);
 		  //if(Showtokens)printf("Usage = variable_name\n");
-		  if(Showtokens)printTokens();
-		  input_argc = 1;
+		  if($2 == 61){
+		    sym_table = putsym(VARIABLE, $1, "variable");
+		    //char *temp = &$2;
+		    sym_table = putsym(METACHARACTER, "=", "assignment");
+		    sym_table = putsym(STRING, $3, "variable_def");
+		    if(Showtokens)printTokens();
+
+		  }
+		  else{
+			yyerror("syntax assignment error");
+		  }
+		    input_argc = 1;
 		 }
 		|ASSIGNTO VARIABLE filename arg_list
 		 {if(Debug)printf("Parser got an assignto line\n");
 		  //if(Showtokens)printf("Usage = assignto\n");
+		  sym_table = pushsym(VARIABLE, $2, "variable");
+		  sym_table = pushsym(ASSIGNTO, $1, "assignto");
 		  if(Showtokens)printTokens();
 		  input_argc = 1;
 		 }
@@ -117,6 +133,7 @@ run:		RUN filename
 		;
 filename:	WORD
 		{//if(Showtokens)printf("Usage = filename\n");
+		 sym_table = putsym(WORD, $1, "directory_name");
 		}	
 		;
 
@@ -126,12 +143,15 @@ arg_list:	arg_list argument
 
 argument:	WORD 
 		{//if(Showtokens)printf("Usage = arg %d\n", input_argc++);
+		 sym_table = putsym(WORD, $1, "arg");
 		}
 		|STRING
 		{//if(Showtokens)printf("Usage = arg %d\n", input_argc++);
+		 sym_table = putsym(STRING, $1, "arg");
 		} 
 		|VARIABLE
 		{//if(Showtokens)printf("Usage = arg %d\n", input_argc++);
+		 sym_table = putsym(VARIABLE, $1, "arg");
 		}
 		;
 		
