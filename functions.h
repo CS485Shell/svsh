@@ -7,13 +7,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "mytable.h"
 
 extern int Debug;
 extern int Showtokens;
 extern char *prompt;
-extern int input_argc;
-extern char** input_argv;
+//extern int input_argc;
+//extern char** input_argv;
 
 
 //Sharing variables functions

@@ -4,13 +4,11 @@ int Debug = 0;
 int Showtokens = 1;
 char *prompt;
 
-int input_argc = 1;
-char** input_argv;
-
 //This symbol table is a linked list of struct symrec's (symbol records)
 symrec *sym_table = NULL;
 
 //Push the current list down, adding a new record to the front of the table
+//(so the new entry is the root of the list)
 symrec* pushsym (sym_type, sym_value, sym_usage)
 	int sym_type;
 	char *sym_value;
@@ -99,7 +97,7 @@ void free_table(){
 		if(ptr->next == NULL){
 			//free(ptr->value);
 			//free(ptr->usage);
-			free(ptr);
+			//free(ptr);
 			sym_table = NULL;
 			return;
 		}
@@ -109,7 +107,7 @@ void free_table(){
 		
 		//free(ptr->next->value);
 		//free(ptr->next->usage);
-		free(ptr->next);
+		//free(ptr->next);
 		ptr->next = NULL;
 	}
 }
@@ -118,7 +116,7 @@ main(){
 	//Sets the initial prompt
 	prompt = malloc(MAXSTRINGLENGTH);
 	strncpy(prompt, "svsh >", MAXSTRINGLENGTH);
-	input_argv = malloc(MAXARGNUMS * sizeof(char*));
+	//input_argv = malloc(MAXARGNUMS * sizeof(char*));
 
 	//Initialize the table by allocating space for the first entry
 	//init_table();
@@ -127,7 +125,7 @@ main(){
 				
 		printf("%s", prompt);
 		//Reset the number of arguments to 0
-		input_argc = 1;
+		//input_argc = 1;
 		/* Reset argument list?
 		int i;
 		for (i = 0; i < MAXARGNUMS; i++){
