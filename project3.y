@@ -142,14 +142,14 @@ void printTokens(){
 
 	symrec* ptr;
 	ptr = sym_table;
-	while(ptr !=0){	
+	while(ptr != NULL){	
 	  if(ptr->type == METACHARACTER)printf("Token Type = metachar\t");
 	  else if(ptr->type == DEFPROMPT)printf("Token Type = keyword\t");
 	  else if(ptr->type == CD)printf("Token Type = keyword\t");
 	  else if(ptr->type == LISTJOBS)printf("Token Type = keyword\t");
 	  else if(ptr->type == BYE)printf("Token Type = keyword\t");
 	  else if(ptr->type == RUN)printf("Token Type = keyword\t");
-	  else if(ptr->type == ASSIGNTO)printf("Token Type = eyword\t");
+	  else if(ptr->type == ASSIGNTO)printf("Token Type = keyword\t");
 	  else if(ptr->type == BG)printf("Token Type = keyword\t");
 	  else if(ptr->type == VARIABLE)printf("Token Type = variable\t");
 	  else if(ptr->type == STRING)printf("Token Type = string\t");

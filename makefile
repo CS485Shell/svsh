@@ -20,7 +20,7 @@ project3.tab.c project3.tab.h:	project3.y
 		bison -d project3.y
 
 main.o:		main.c
-		gcc -o main.o -c main.c
+		gcc $(CFLAGS) -o main.o -c main.c
 
 clean:
 	rm -f *.o lex.yy.c project3.tab.c project3.tab.h 
