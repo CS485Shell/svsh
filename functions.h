@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include "mytable.h"
 
-extern int Debug;
+//extern int Debug;
 extern int Showtokens;
 extern char *prompt;
 //extern int input_argc;

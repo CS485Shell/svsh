@@ -1,6 +1,6 @@
 #include "functions.h"
 
-int Debug = 0;
+//int Debug = 0;
 int Showtokens = 1;
 char *prompt;
 
@@ -92,48 +92,30 @@ void init_table(){
 void free_table(){
 	if(sym_table == NULL)
 		return;
-	while(sym_table != NULL){
-		symrec *ptr = sym_table;
-		if(ptr->next == NULL){
-			//free(ptr->value);
-			//free(ptr->usage);
-			//free(ptr);
-			sym_table = NULL;
-			return;
-		}
-		while(ptr->next->next != NULL){
-			ptr = ptr->next;
-		}
-		
-		//free(ptr->next->value);
-		//free(ptr->next->usage);
-		//free(ptr->next);
-		ptr->next = NULL;
+	symrec *ptr = sym_table;
+	while(ptr != NULL){
+		symrec *ptr2 = ptr;
+		ptr = ptr->next;
+		//free(ptr2->value);
+		ptr2->value = NULL;
+		//free(ptr2->usage);
+		ptr2->usage = NULL;
+		//free(ptr2);
+		ptr2 = NULL;	
 	}
+	sym_table = NULL;
 }
 
 main(){
 	//Sets the initial prompt
 	prompt = malloc(MAXSTRINGLENGTH);
 	strncpy(prompt, "svsh >", MAXSTRINGLENGTH);
-	//input_argv = malloc(MAXARGNUMS * sizeof(char*));
-
-	//Initialize the table by allocating space for the first entry
-	//init_table();
 
 	while(1){
 				
 		printf("%s", prompt);
-		//Reset the number of arguments to 0
-		//input_argc = 1;
-		/* Reset argument list?
-		int i;
-		for (i = 0; i < MAXARGNUMS; i++){
-			input_argv[i] = "";
-		}
-		*/
 		yyparse();	//the parser
-		printf("\n");
+		//printf("\n");
 		free_table();
 	}
 	return 0;
