@@ -1,16 +1,31 @@
 /* 
  * File:   svsh.h
  * Author: Bhushan
- *
+ * Header file
  * Created on November 13, 2014, 1:57 PM
  */
 
 #ifndef SVSH_H
 #define	SVSH_H
-#include <stdlib.h>
 
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include "structs.h"
+
+#define JOBS_LIMIT 20
 
 void userCmd(ARGL *argl, char *input, char *result);
 
 
-#endif /* SVSH_H */
+
+ varl * variablel; // keep track of variable list.
+/*#ifdef	__cplusplus
+extern "C" {
+#endif
+#ifdef	__cplusplus
+}
+#endif
+*/
+#endif	/* SVSH_H */
+
