@@ -1,21 +1,10 @@
 NOTES
-11/11/14
-	Added a debug and showtokens global variable.  
-	Added to the functions.h file prototypes and useful includes.
+11/13/14
+	The project.y makeArgList() function finally makes the argument list correctly, where the first element should always be the filename and the arguments are in input order.  There is also a companion variable that tracks how many arguments there are.  The parser is ready to call functions to actually perform the user's command.  
 
-	The parser now prints out token information in nearly the correct format when Showtokens = 1.
+How it works: The main function contains the symbol table definition and pushsym, putsym, and free_table functions.  The symbol table is a linked list of structs where each struct has the token type (an int representing metacharacter, keyword, etc.), value, and usage.
 
-	TODO: The parser needs to build argument lists in the right order as it goes along and correctly print out the usage of each individual token, not just the first token.  It is currently printing the token usage of the first token at the end of the parsed line only.
-
-10/4/14
-	The scanner and parser work more closely together than I thought, the parser will just call the scanner each time.  Therefore there isn't any need to call the scanner at any point in the main.c file.
-	The parser now recognizes comment lines and the scanner appropriately stops when it encounters a newline character.  The parser appropriately stops when it reads end of file (Ctrl-D).  The parser still prints out an error message and stops completely when it doesn't recognize input.
-
-10/1/14
-	The regular expressions for recognizing tokens in the scanner should be correct.  
-	It's the grammar that needs work.  Right now if you run it it will print
-	out every time it recognizes a token, and the parser occassionally prints
-	out that it recognizes a line of any text.
+	I removed the Debug global variable.  There are debug definitions in project3.y and project3.lex for debugging now.
 
 INCLUDED FILES
 
