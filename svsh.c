@@ -1,6 +1,5 @@
 /* 
  * File:   svsh.c
- * Author: Bhushan
  * shell
  * Created on November 13, 2014, 1:57 PM
  */
