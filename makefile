@@ -1,4 +1,4 @@
-OBJECTS	= main.o parser.o scanner.o p3syscalls.o
+OBJECTS	= main.o parser.o scanner.o
 HEADERS = project3.tab.h functions.h
 CC 	= gcc
 CFLAGS	= -g
@@ -11,7 +11,7 @@ scanner.o:	lex.yy.c
 
 parser.o:	project3.tab.c
 		gcc $(CFLAGS) -c project3.tab.c -o parser.o
- 
+
 lex.yy.c: 	project3.lex
 		flex project3.lex
 
@@ -19,10 +19,8 @@ lex.yy.c: 	project3.lex
 project3.tab.c project3.tab.h:	project3.y
 		bison -d project3.y
 
-p3syscalls.o:	p3syscalls.c
-		gcc $(CFLAGS) -o p3syscalls.o -c p3syscalls.c
 main.o:		main.c
 		gcc $(CFLAGS) -o main.o -c main.c
 
 clean:
-	rm -f *.o lex.yy.c project3.tab.c project3.tab.h 
+	rm -f *.o lex.yy.c project3.tab.c project3.tab.h
