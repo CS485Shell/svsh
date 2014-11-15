@@ -17,8 +17,8 @@ char** makeArgList(int* a, char** argv);
 extern char* prompt;
 extern int yylex();
 extern void yyerror(char*);
-//int job_place;
-//char* jobs[1024];
+int job_place;
+char* jobs[1024];
 %}
 
 %union{
@@ -149,7 +149,7 @@ run:		RUN filename
 		  if(Showtokens)printTokens();
 
                   // Store the job in jobs array                                                                     |~
-                  //ListJobs(input_argv);
+                  ListJobs(input_argv);
 
 		  //Call run with these arguments, or just fork and exec?
 		  //fork();
@@ -170,7 +170,7 @@ run:		RUN filename
 		  if(Showtokens)printTokens();
 
 		  // Store the job in jobs array
-		  //ListJobs(input_argv);
+		  ListJobs(input_argv);
 		  //input_argc = 1;
 		 }
 		|RUN filename arg_list
@@ -199,7 +199,7 @@ run:		RUN filename
 		  if(Showtokens)printTokens();
 
 		  // Store the job in jobs array
-                  //ListJobs(input_argv);
+                  ListJobs(input_argv);
 		  //input_argc = 1;
 		 }
 		;
@@ -315,19 +315,25 @@ int ChangeDir(char* directory)
 
 
 
-/*
+
 int ListJobs(char** input_argv)
 {
 	//list all jobs running in background
+	int i = 0;
 
 	printf("Program has entered Listjobs.\n");
 
 	jobs[job_place] = input_argv[0];
         job_place++;
 
+	while (i < sizeof(jobs) && jobs[i]!=NULL)
+	{
+		printf("%s     ", jobs[i]);
+		i++;
+	}
+	printf("\n");
+	
 
-
-*/
 
 /*
 	//list all jobs running in background
@@ -341,5 +347,5 @@ int ListJobs(char** input_argv)
 	}
 */
 
-//}
+}
 

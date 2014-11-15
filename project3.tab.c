@@ -76,8 +76,8 @@ char** makeArgList(int* a, char** argv);
 extern char* prompt;
 extern int yylex();
 extern void yyerror(char*);
-//int job_place;
-//char* jobs[1024];
+int job_place;
+char* jobs[1024];
 
 #line 83 "project3.tab.c" /* yacc.c:339  */
 
@@ -1442,7 +1442,7 @@ yyreduce:
 		  if(Showtokens)printTokens();
 
                   // Store the job in jobs array                                                                     |~
-                  //ListJobs(input_argv);
+                  ListJobs(input_argv);
 
 		  //Call run with these arguments, or just fork and exec?
 		  //fork();
@@ -1467,7 +1467,7 @@ yyreduce:
 		  if(Showtokens)printTokens();
 
 		  // Store the job in jobs array
-		  //ListJobs(input_argv);
+		  ListJobs(input_argv);
 		  //input_argc = 1;
 		 }
 #line 1474 "project3.tab.c" /* yacc.c:1646  */
@@ -1504,7 +1504,7 @@ yyreduce:
 		  if(Showtokens)printTokens();
 
 		  // Store the job in jobs array
-                  //ListJobs(input_argv);
+                  ListJobs(input_argv);
 		  //input_argc = 1;
 		 }
 #line 1511 "project3.tab.c" /* yacc.c:1646  */
@@ -1846,7 +1846,7 @@ int ChangeDir(char* directory)
 
 	k = chdir(directory);
 	printf("The directory is now: %s\n", get_current_dir_name());
-//	printf("The directory is now: %s\n", buf);
+	
 	if (!k)
 	{
 		printf("The directory is now: %s\n", get_current_dir_name());	
@@ -1860,19 +1860,24 @@ int ChangeDir(char* directory)
 
 
 
-/*
+
 int ListJobs(char** input_argv)
 {
 	//list all jobs running in background
+	int i = 0;
 
 	printf("Program has entered Listjobs.\n");
 
 	jobs[job_place] = input_argv[0];
         job_place++;
 
+	while (i < sizeof(jobs) && jobs[i]!=NULL)
+	{
+		printf("%s ", jobs[i]);
+		i++;
+	}
+	
 
-
-*/
 
 /*
 	//list all jobs running in background
@@ -1886,5 +1891,5 @@ int ListJobs(char** input_argv)
 	}
 */
 
-//}
+}
 
