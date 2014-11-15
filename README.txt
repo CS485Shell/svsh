@@ -1,4 +1,8 @@
 NOTES
+11/15/14
+	As of right now, CD and Listjobs works. When running ./svsh there will be "warnings". These are OK.
+The functions for CD and Listjobs were included in project3.y.
+
 11/13/14
 	The project.y makeArgList() function finally makes the argument list correctly, where the first element should always be the filename and the arguments are in input order.  There is also a companion variable that tracks how many arguments there are.  The parser is ready to call functions to actually perform the user's command.  
 
