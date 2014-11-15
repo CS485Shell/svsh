@@ -1,5 +1,5 @@
 /* BISON file
- * Contains the grammar for our svsh parser
+ * Contains the grammar for our ssh parser
  * Also defines the tokens that the scanner will look for
  *
  */
@@ -7,6 +7,7 @@
 %{
 #include "functions.h"
 #include "mytable.h"
+#include <unistd.h>
 
 #define DEBUGTOKENS 0	//Print messages about what the scanner gives back
 #define DEBUGARGV 0	//Print the argv list that the parser builds
@@ -93,6 +94,7 @@ run_command:	BYE
 		  sym_table = putsym(WORD, $2, "directory_name");
 		  if(Showtokens)printTokens();
 		  //input_argc = 1;
+		  ChangeDir($2);
 		 }
 		|CD VARIABLE
 		 {if(DEBUGTOKENS)printf("Parser got: %s to %s\n", $1, $2); 
@@ -275,4 +277,24 @@ char** makeArgList(int* input_argc, char** input_argv){
 	    }
 	}
 	return input_argv;
+}
+
+int ChangeDir(char* directory)
+{
+	int k = 0;
+   	printf("Program ChangeDir has been entered. \n");
+	char* buf = malloc(MAXSTRINGLENGTH);
+	getwd(buf);
+
+	k = chdir(directory);
+	printf("The directory is now: %s\n", get_current_dir_name());
+//	printf("The directory is now: %s\n", buf);
+	if (!k)
+	{
+		printf("The directory is now: %s\n", get_current_dir_name());	
+	}
+	else
+	{
+		printf("%s is not a directory2.\n", directory);
+	}
 }
