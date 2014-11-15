@@ -17,6 +17,8 @@ char** makeArgList(int* a, char** argv);
 extern char* prompt;
 extern int yylex();
 extern void yyerror(char*);
+//int job_place;
+//char* jobs[1024];
 %}
 
 %union{
@@ -76,6 +78,7 @@ run_command:	BYE
 		  //if(Showtokens)printf("Usage = listjobs\n");
 		  sym_table = putsym(LISTJOBS, $1, "listjobs");
 		  if(Showtokens)printTokens();
+	  	  //ListJobs();
 		  //input_argc = 1;
 		 }
 		|DEFPROMPT STRING
@@ -145,6 +148,9 @@ run:		RUN filename
 		  //Prints all the tokens
 		  if(Showtokens)printTokens();
 
+                  // Store the job in jobs array                                                                     |~
+                  //ListJobs(input_argv);
+
 		  //Call run with these arguments, or just fork and exec?
 		  //fork();
 		  //execve(input_argv[0], input_argv);
@@ -153,6 +159,7 @@ run:		RUN filename
 		 {if(DEBUGTOKENS)printf("Parser saw a run with BG option, no arguments\n");		  
 		  sym_table = pushsym(RUN, $1, "run");
 		  sym_table = putsym(BG, $1, "<bg>");
+		  
 
 		  //Building the argument list
 		  int input_argc = 0; //Number of elements in argv
@@ -161,6 +168,9 @@ run:		RUN filename
 		  input_argv = makeArgList(&input_argc, input_argv);
 
 		  if(Showtokens)printTokens();
+
+		  // Store the job in jobs array
+		  //ListJobs(input_argv);
 		  //input_argc = 1;
 		 }
 		|RUN filename arg_list
@@ -187,6 +197,9 @@ run:		RUN filename
 		  input_argv = makeArgList(&input_argc, input_argv);
 
 		  if(Showtokens)printTokens();
+
+		  // Store the job in jobs array
+                  //ListJobs(input_argv);
 		  //input_argc = 1;
 		 }
 		;
@@ -288,13 +301,45 @@ int ChangeDir(char* directory)
 
 	k = chdir(directory);
 	printf("The directory is now: %s\n", get_current_dir_name());
-//	printf("The directory is now: %s\n", buf);
+	
 	if (!k)
 	{
 		printf("The directory is now: %s\n", get_current_dir_name());	
 	}
 	else
 	{
-		printf("%s is not a directory2.\n", directory);
+		printf("%s is not a directory.\n", directory);
 	}
+//	free(buf);
 }
+
+
+
+/*
+int ListJobs(char** input_argv)
+{
+	//list all jobs running in background
+
+	printf("Program has entered Listjobs.\n");
+
+	jobs[job_place] = input_argv[0];
+        job_place++;
+
+
+
+*/
+
+/*
+	//list all jobs running in background
+	printf("Program has entered Listjobs.\n");
+
+	int j, n;
+	n = sizeof(jobs)/sizeof(jobs[0]);
+	for (j = 0; j < n; j++)
+	{
+		printf("%s %d\n, jobs[i], i");
+	}
+*/
+
+//}
+

@@ -5,7 +5,7 @@ $Filebase = "paper"
 $ShowTokens = "1"
 run echo $PATH
 cd /usr/bin
-cd ./bin
+cd ../bin
 cd ../misc/oldstuf
 cd /usr
 cd $HomeDir
