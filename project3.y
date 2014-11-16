@@ -156,7 +156,7 @@ run:		RUN filename
 
                   // Store the job in jobs array
                   ListJobs(input_argv);
-
+		  runCommand(input_argv, 0);
 		  //Call run with these arguments, or just fork and exec?
 		  //fork();
 		  //execve(input_argv[0], input_argv);
