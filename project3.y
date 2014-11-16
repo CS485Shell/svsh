@@ -78,7 +78,7 @@ run_command:	BYE
 		  //if(Showtokens)printf("Usage = listjobs\n");
 		  sym_table = putsym(LISTJOBS, $1, "listjobs");
 		  if(Showtokens)printTokens();
-	  	  //ListJobs();
+	  	  PrintListJobs();
 		  //input_argc = 1;
 		 }
 		|DEFPROMPT STRING
@@ -148,7 +148,7 @@ run:		RUN filename
 		  //Prints all the tokens
 		  if(Showtokens)printTokens();
 
-                  // Store the job in jobs array                                                                     |~
+                  // Store the job in jobs array
                   ListJobs(input_argv);
 
 		  //Call run with these arguments, or just fork and exec?
@@ -296,18 +296,23 @@ int ChangeDir(char* directory)
 {
 	int k = 0;
    	printf("Program ChangeDir has been entered. \n");
+
+	//buffer to store the directory_name
 	char* buf = malloc(MAXSTRINGLENGTH);
 	getwd(buf);
 
+	//changes the directory
 	k = chdir(directory);
-	printf("The directory is now: %s\n", get_current_dir_name());
+	
 	
 	if (!k)
 	{
+		//double check that the directory has actually changed
 		printf("The directory is now: %s\n", get_current_dir_name());	
 	}
 	else
 	{
+		//Syntax is right, but there is no directory to go to
 		printf("%s is not a directory.\n", directory);
 	}
 //	free(buf);
@@ -318,34 +323,39 @@ int ChangeDir(char* directory)
 
 int ListJobs(char** input_argv)
 {
-	//list all jobs running in background
-	int i = 0;
-
+	//track all jobs running in background
 	printf("Program has entered Listjobs.\n");
 
+	//store the command in the array of jobs
 	jobs[job_place] = input_argv[0];
+
+	//increment the global variable
         job_place++;
-
-	while (i < sizeof(jobs) && jobs[i]!=NULL)
-	{
-		printf("%s     ", jobs[i]);
-		i++;
-	}
-	printf("\n");
-	
-
-
-/*
-	//list all jobs running in background
-	printf("Program has entered Listjobs.\n");
-
-	int j, n;
-	n = sizeof(jobs)/sizeof(jobs[0]);
-	for (j = 0; j < n; j++)
-	{
-		printf("%s %d\n, jobs[i], i");
-	}
-*/
 
 }
 
+void PrintListJobs()
+{
+	//print all jobs in the background
+	printf("Program will print ListJobs:\n");
+	
+	int i = 0;//iterator	
+
+	//If there are no background jobs running
+	if (jobs[i] == NULL)
+        {
+                printf("There are no background jobs at this time.\n");
+        }
+
+	//If Background jobs are present
+	printf("Background jobs:\n");
+
+	//while the list still has values and not NULL, print off the jobs 
+	while (i < sizeof(jobs) && jobs[i]!=NULL)
+        {
+                printf("%s     ", jobs[i]);
+                i++;
+        }
+        printf("\n");
+
+}	

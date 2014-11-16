@@ -1350,7 +1350,7 @@ yyreduce:
 		  //if(Showtokens)printf("Usage = listjobs\n");
 		  sym_table = putsym(LISTJOBS, (yyvsp[0].str_val), "listjobs");
 		  if(Showtokens)printTokens();
-	  	  //ListJobs();
+	  	  PrintListJobs();
 		  //input_argc = 1;
 		 }
 #line 1357 "project3.tab.c" /* yacc.c:1646  */
@@ -1441,7 +1441,7 @@ yyreduce:
 		  //Prints all the tokens
 		  if(Showtokens)printTokens();
 
-                  // Store the job in jobs array                                                                     |~
+                  // Store the job in jobs array
                   ListJobs(input_argv);
 
 		  //Call run with these arguments, or just fork and exec?
@@ -1863,33 +1863,31 @@ int ChangeDir(char* directory)
 
 int ListJobs(char** input_argv)
 {
-	//list all jobs running in background
-	int i = 0;
-
+	//track all jobs running in background
 	printf("Program has entered Listjobs.\n");
 
 	jobs[job_place] = input_argv[0];
         job_place++;
 
-	while (i < sizeof(jobs) && jobs[i]!=NULL)
-	{
-		printf("%s ", jobs[i]);
-		i++;
-	}
-	
-
-
-/*
-	//list all jobs running in background
-	printf("Program has entered Listjobs.\n");
-
-	int j, n;
-	n = sizeof(jobs)/sizeof(jobs[0]);
-	for (j = 0; j < n; j++)
-	{
-		printf("%s %d\n, jobs[i], i");
-	}
-*/
-
 }
 
+void PrintListJobs()
+{
+	//print all jobs in the background
+	printf("Program will print ListJobs:\n");
+	
+	int i = 0;	
+
+	 printf("Background jobs:\n");
+	while (i < sizeof(jobs) && jobs[i]!=NULL)
+        {
+                printf("%s     ", jobs[i]);
+                i++;
+        }
+	if (jobs[i] == NULL)
+	{
+		printf("There are no background jobs at this time.\n");
+	}
+        printf("\n");
+
+}	
