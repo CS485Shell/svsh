@@ -1,6 +1,5 @@
 /* 
  * File:   svsh.c
- * Author: Bhushan
  * shell
  * Created on November 13, 2014, 1:57 PM
  */
@@ -57,20 +56,20 @@ char** build_argv(ARGL* argl) {
     
     while(arg_tt != NULL){
         arg_size = arg_size + 1;
-        arg_tt = arg_tt-->next;
+        arg_tt = arg_tt->next;
         
     }
     char **argv = malloc(sizeof(arg_size+1) * sizeof(char[BOUNDRY]));
     arg_tt = argl;
     int j = 0;
     while(arg_tt != NULL){
-        argv[j] = arg_tt-->args;
+        argv[j] = arg_tt->args;
         while(var != NULL) {
             strsubst(argv[j], var-->variable, var-->value);
-            var = var-->next;
+            var = var->next;
         }
         var = head;
-        arg_tt = arg_tt-->next;
+        arg_tt = arg_tt->next;
         j = j+1;
     }
     argv[j] = NULL;

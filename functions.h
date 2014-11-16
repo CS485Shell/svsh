@@ -6,6 +6,7 @@
 #define NextVar 317 //System Call #317 is the int NextVariable function
 #define MAXSTRINGLENGTH  256
 #define MAXARGNUMS 256
+#define MAX_JOBS 20
 //Only include c std .h files in this header to avoid gcc and C++ comflints
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +15,7 @@
 #include "mytable.h"
 
 //extern int Debug;
+extern int ChangeDir(char* directory);
 extern int Showtokens;
 extern char *prompt;
 //extern int input_argc;

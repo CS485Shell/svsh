@@ -1,5 +1,5 @@
 /* BISON file
- * Contains the grammar for our svsh parser
+ * Contains the grammar for our ssh parser
  * Also defines the tokens that the scanner will look for
  *
  */
@@ -7,6 +7,7 @@
 %{
 #include "functions.h"
 #include "mytable.h"
+#include <unistd.h>
 
 #define DEBUGTOKENS 0	//Print messages about what the scanner gives back
 #define DEBUGARGV 0	//Print the argv list that the parser builds
@@ -16,6 +17,8 @@ char** makeArgList(int* a, char** argv);
 extern char* prompt;
 extern int yylex();
 extern void yyerror(char*);
+int job_place;
+char* jobs[1024];
 %}
 
 %union{
@@ -75,6 +78,7 @@ run_command:	BYE
 		  //if(Showtokens)printf("Usage = listjobs\n");
 		  sym_table = putsym(LISTJOBS, $1, "listjobs");
 		  if(Showtokens)printTokens();
+	  	  PrintListJobs();
 		  //input_argc = 1;
 		 }
 		|DEFPROMPT STRING
@@ -93,6 +97,7 @@ run_command:	BYE
 		  sym_table = putsym(WORD, $2, "directory_name");
 		  if(Showtokens)printTokens();
 		  //input_argc = 1;
+		  ChangeDir($2);
 		 }
 		|CD VARIABLE
 		 {if(DEBUGTOKENS)printf("Parser got: %s to %s\n", $1, $2); 
@@ -143,6 +148,9 @@ run:		RUN filename
 		  //Prints all the tokens
 		  if(Showtokens)printTokens();
 
+                  // Store the job in jobs array
+                  ListJobs(input_argv);
+
 		  //Call run with these arguments, or just fork and exec?
 		  //fork();
 		  //execve(input_argv[0], input_argv);
@@ -151,6 +159,7 @@ run:		RUN filename
 		 {if(DEBUGTOKENS)printf("Parser saw a run with BG option, no arguments\n");		  
 		  sym_table = pushsym(RUN, $1, "run");
 		  sym_table = putsym(BG, $1, "<bg>");
+		  
 
 		  //Building the argument list
 		  int input_argc = 0; //Number of elements in argv
@@ -159,6 +168,9 @@ run:		RUN filename
 		  input_argv = makeArgList(&input_argc, input_argv);
 
 		  if(Showtokens)printTokens();
+
+		  // Store the job in jobs array
+		  ListJobs(input_argv);
 		  //input_argc = 1;
 		 }
 		|RUN filename arg_list
@@ -185,6 +197,9 @@ run:		RUN filename
 		  input_argv = makeArgList(&input_argc, input_argv);
 
 		  if(Showtokens)printTokens();
+
+		  // Store the job in jobs array
+                  ListJobs(input_argv);
 		  //input_argc = 1;
 		 }
 		;
@@ -211,7 +226,6 @@ argument:	WORD
 		 sym_table = putsym(VARIABLE, $1, "arg");
 		}
 		;
-		
 %%
 
 //Prints all the symbols seen in order
@@ -276,3 +290,70 @@ char** makeArgList(int* input_argc, char** input_argv){
 	}
 	return input_argv;
 }
+
+int ChangeDir(char* directory)
+{
+	int k = 0;
+   	printf("Program ChangeDir has been entered. \n");
+
+	//buffer to store the directory_name
+	char* buf = malloc(MAXSTRINGLENGTH);
+	getwd(buf);
+
+	//changes the directory
+	k = chdir(directory);
+	
+	
+	if (!k)
+	{
+		//double check that the directory has actually changed
+		printf("The directory is now: %s\n", get_current_dir_name());	
+	}
+	else
+	{
+		//Syntax is right, but there is no directory to go to
+		printf("%s is not a directory.\n", directory);
+	}
+//	free(buf);
+}
+
+
+
+//track all jobs running in background
+int ListJobs(char** input_argv)
+{
+	//printf("Program has entered Listjobs.\n");
+
+	//store the command in the array of jobs
+	jobs[job_place] = input_argv[0];
+
+	//increment the global variable
+        job_place++;
+
+}
+
+//print all jobs in the background
+void PrintListJobs()
+{
+	//printf("Program will print ListJobs:\n");
+	
+	int i = 0;//iterator	
+
+	//If there are no background jobs running
+	if (jobs[i] == NULL)
+        {
+                printf("There are no background jobs at this time.\n");
+        }
+
+	//If Background jobs are present
+	printf("Background jobs:\n");
+
+	//while the list still has values and not NULL, print off the jobs 
+	while (i < sizeof(jobs) && jobs[i]!=NULL)
+        {
+                printf("%s     ", jobs[i]);
+                i++;
+        }
+        printf("\n");
+
+}	

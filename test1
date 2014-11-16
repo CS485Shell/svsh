@@ -1,0 +1,6 @@
+$PATH = "/bin:/usr/bin"
+$HomeDir = "/home/mylogin"
+$Myfile = "fileA"
+$Filebase = "paper"
+$ShowTokens = "1"
+bye

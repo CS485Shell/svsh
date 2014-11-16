@@ -1,6 +1,5 @@
 /* 
  * File:   svsh.h
- * Author: Bhushan
  * Header file
  * Created on November 13, 2014, 1:57 PM
  */

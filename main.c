@@ -109,7 +109,7 @@ void free_table(){
 main(){
 	//Sets the initial prompt
 	prompt = malloc(MAXSTRINGLENGTH);
-	strncpy(prompt, "svsh >", MAXSTRINGLENGTH);
+	strncpy(prompt, "svsh > ", MAXSTRINGLENGTH);
 
 	while(1){
 				
