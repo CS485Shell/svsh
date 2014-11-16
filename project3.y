@@ -226,7 +226,6 @@ argument:	WORD
 		 sym_table = putsym(VARIABLE, $1, "arg");
 		}
 		;
-		
 %%
 
 //Prints all the symbols seen in order
@@ -320,11 +319,10 @@ int ChangeDir(char* directory)
 
 
 
-
+//track all jobs running in background
 int ListJobs(char** input_argv)
 {
-	//track all jobs running in background
-	printf("Program has entered Listjobs.\n");
+	//printf("Program has entered Listjobs.\n");
 
 	//store the command in the array of jobs
 	jobs[job_place] = input_argv[0];
@@ -334,10 +332,10 @@ int ListJobs(char** input_argv)
 
 }
 
+//print all jobs in the background
 void PrintListJobs()
 {
-	//print all jobs in the background
-	printf("Program will print ListJobs:\n");
+	//printf("Program will print ListJobs:\n");
 	
 	int i = 0;//iterator	
 

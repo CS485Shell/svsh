@@ -1,0 +1,6 @@
+cd /usr/bin
+cd ../bin
+cd /misc/oldstuf
+cd /usr
+cd $HomeDir
+bye

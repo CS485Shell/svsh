@@ -1,0 +1,8 @@
+run echo $PATH
+run /usr/bin/wc -l $Myfile
+run wc -l f1 f2 f3 <bg>
+assignto $TextFile /bin/echo -e $Filebase "\b.txt"
+run cat $TextFile
+run /bin/ls
+run ls -l -F -g -s /tmp
+bye

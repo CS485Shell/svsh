@@ -1771,7 +1771,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 230 "project3.y" /* yacc.c:1906  */
+#line 229 "project3.y" /* yacc.c:1906  */
 
 
 //Prints all the symbols seen in order
@@ -1841,18 +1841,23 @@ int ChangeDir(char* directory)
 {
 	int k = 0;
    	printf("Program ChangeDir has been entered. \n");
+
+	//buffer to store the directory_name
 	char* buf = malloc(MAXSTRINGLENGTH);
 	getwd(buf);
 
+	//changes the directory
 	k = chdir(directory);
-	printf("The directory is now: %s\n", get_current_dir_name());
+	
 	
 	if (!k)
 	{
+		//double check that the directory has actually changed
 		printf("The directory is now: %s\n", get_current_dir_name());	
 	}
 	else
 	{
+		//Syntax is right, but there is no directory to go to
 		printf("%s is not a directory.\n", directory);
 	}
 //	free(buf);
@@ -1860,34 +1865,41 @@ int ChangeDir(char* directory)
 
 
 
-
+//track all jobs running in background
 int ListJobs(char** input_argv)
 {
-	//track all jobs running in background
-	printf("Program has entered Listjobs.\n");
+	//printf("Program has entered Listjobs.\n");
 
+	//store the command in the array of jobs
 	jobs[job_place] = input_argv[0];
+
+	//increment the global variable
         job_place++;
 
 }
 
+//print all jobs in the background
 void PrintListJobs()
 {
-	//print all jobs in the background
-	printf("Program will print ListJobs:\n");
+	//printf("Program will print ListJobs:\n");
 	
-	int i = 0;	
+	int i = 0;//iterator	
 
-	 printf("Background jobs:\n");
+	//If there are no background jobs running
+	if (jobs[i] == NULL)
+        {
+                printf("There are no background jobs at this time.\n");
+        }
+
+	//If Background jobs are present
+	printf("Background jobs:\n");
+
+	//while the list still has values and not NULL, print off the jobs 
 	while (i < sizeof(jobs) && jobs[i]!=NULL)
         {
                 printf("%s     ", jobs[i]);
                 i++;
         }
-	if (jobs[i] == NULL)
-	{
-		printf("There are no background jobs at this time.\n");
-	}
         printf("\n");
 
 }	
