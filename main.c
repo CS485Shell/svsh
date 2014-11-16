@@ -110,6 +110,11 @@ main(){
 	//Sets the initial prompt
 	prompt = malloc(MAXSTRINGLENGTH);
 	strncpy(prompt, "svsh > ", MAXSTRINGLENGTH);
+	int i;
+	for (i = 0; i < 1024; i++){
+		i_jobs[i] = NULL;
+	}
+	strncpy(jobs, "", MAXSTRINGLENGTH);
 
 	while(1){
 				

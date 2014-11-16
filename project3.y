@@ -23,8 +23,11 @@ extern int yylex();
 extern void yyerror(char*);
 
 int job_place;
-int* i_jobs[1024];
-char* jobs[1024];
+extern int* i_jobs[1024];
+extern char* jobs[1024];
+
+
+
 %}
 
 %union{
@@ -373,23 +376,29 @@ int runCommand(char** input_argv, int background)
         exit(1);
     }
     if(background){
+      //if it is a backround job, find the job id location
       int i = 0;
       while(i < 1024 && i_jobs[i] != NULL){
 	i++;
       }
-      *i_jobs[i] = pid;
-      }else{
-        if((waitpid(pid, &state, 0)) < 0){
-            perror("WAITPID");
-            kill(pid, SIGKILL);
-	    int j = 0;
-	    while(*i_jobs[j] != pid){
-		j++;
-	    }
-	    i_jobs[j] = NULL;
-            
-        }
-      }
+      *i_jobs[i] = pid; //and set it to the pid
+
+      //Wait for the background job to finish
+      waitpid(pid, &state, 0);
+      perror("WAITPID");
+      kill(pid, SIGKILL); //and kill it
+    }
+    /*else{
+	//Otherwise, find the location
+	 int j = 0;
+	 for(j = 0; j < 1024; j++){
+		if(*i_jobs[j] == pid){
+			i_jobs[j] = NULL;
+		}
+	 }
+	 //and set it to NULL
+    }*/
+     
     //free(argv);
 }
 
