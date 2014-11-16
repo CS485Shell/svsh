@@ -14,10 +14,16 @@
 
 void printTokens();
 char** makeArgList(int* a, char** argv);
+int ListJobs(char** input_argv);
+void PrintListJobs();
+int ChangeDir(char* directory);
+
 extern char* prompt;
 extern int yylex();
 extern void yyerror(char*);
+
 int job_place;
+int jobs[1024];
 char* jobs[1024];
 %}
 

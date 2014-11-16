@@ -15,7 +15,7 @@
 #include "mytable.h"
 
 //extern int Debug;
-extern int ChangeDir(char* directory);
+//extern int ChangeDir(char* directory);
 extern int Showtokens;
 extern char *prompt;
 //extern int input_argc;
