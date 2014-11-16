@@ -1,6 +1,9 @@
 #ifndef SVSH_H_INCLUDED
 #define SVSH_H_INCLUDED
 
+#define SaveVar 315 //System Call #315 is the int SaveVariable function
+#define GetVar 316 //System Call #316 is int GetVariable function
+#define NextVar 317 //System Call #317 is the int NextVariable function
 #define MAXSTRINGLENGTH  256
 #define MAXARGNUMS 256
 //Only include c std .h files in this header to avoid gcc and C++ comflints
