@@ -180,6 +180,7 @@ run:		RUN filename
 
 		  // Store the job in jobs array
 		  ListJobs(input_argv);
+		  runCommand(input_argv, 1);
 		  //input_argc = 1;
 		 }
 		|RUN filename arg_list
@@ -209,6 +210,7 @@ run:		RUN filename
 
 		  // Store the job in jobs array
                   ListJobs(input_argv);
+                  runCommand(input_argv, 1);
 		  //input_argc = 1;
 		 }
 		;
