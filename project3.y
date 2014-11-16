@@ -393,7 +393,8 @@ int runCommand(char** input_argv, int background)
     //free(argv);
 }
 
-/*int Assignto (char** varname, char** input_argv)
+/*
+int Assignto (char** varname, char** input_argv)
 {
     pid_t pid;
     int state;
@@ -424,4 +425,5 @@ int runCommand(char** input_argv, int background)
     
     // addTovarlist(varname, result);
     free(argv);
-} */
+} 
+*/
