@@ -23,7 +23,7 @@ extern int yylex();
 extern void yyerror(char*);
 
 int job_place;
-int jobs[1024];
+int* i_jobs[1024];
 char* jobs[1024];
 %}
 
@@ -367,19 +367,28 @@ int runCommand(char** input_argv, int background)
 {
     pid_t pid;
     int state;
-    char** argv = makeArgList(input_argv);
+    //char** argv = makeArgList(input_argv);
     if((pid = fork()) == 0){
-        execvp(argv[0], argv);
+        execvp(input_argv[0], input_argv);
         exit(1);
     }
     if(background){
-      jobs(pid);
+      int i = 0;
+      while(i < 1024 && i_jobs[i] != NULL){
+	i++;
+      }
+      *i_jobs[i] = pid;
       }else{
-        if(waitpid(pid, &state, 0)) < 0){
+        if((waitpid(pid, &state, 0)) < 0){
             perror("WAITPID");
             kill(pid, SIGKILL);
+	    int j = 0;
+	    while(*i_jobs[j] != pid){
+		j++;
+	    }
+	    i_jobs[j] = NULL;
             
         }
       }
-    free(argv);
+    //free(argv);
 }
