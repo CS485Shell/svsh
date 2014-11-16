@@ -363,3 +363,23 @@ void PrintListJobs()
         printf("\n");
 
 }	
+int runCommand(char** input_argv, int background)
+{
+    pid_t pid;
+    int state;
+    char** argv = makeArgList(input_argv);
+    if((pid = fork()) == 0){
+        execvp(argv[0], argv);
+        exit(1);
+    }
+    if(background){
+      jobs(pid);
+      }else{
+        if(waitpid(pid, &state, 0)) < 0){
+            perror("WAITPID");
+            kill(pid, SIGKILL);
+            
+        }
+      }
+    free(argv);
+}
