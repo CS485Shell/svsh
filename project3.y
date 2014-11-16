@@ -392,3 +392,36 @@ int runCommand(char** input_argv, int background)
       }
     //free(argv);
 }
+
+/*int Assignto (char** varname, char** input_argv)
+{
+    pid_t pid;
+    int state;
+    int fd[2]; // file descripter to pipe data from command
+    char** argv = makeArgList(input_argv);
+    char* result = (char*)malloc(sizeof(char[MAXSTRINGLENGTH]));
+    pipe(fd);
+    
+    //STDOUT_FILENO == fileno(stdout)
+    if((pid = fork()) == 0) {
+        // int dup2(int fildes, int fildes2);
+        // include <unistd.h>
+        // redirect the output
+        dup2(fd[1], STDOUT_FILENO);
+        execvp(argv[0], argv);
+        exit(1);
+        
+    }
+    if(waitpid(pid, &state, 0) , 0) {
+        perror("WAITPID");
+        kill(pid, SIGLKILL);
+    }
+    // Read the output into variables?
+    read(fd[0], result, MAXSTRINGLENGTH);
+    result[MAXSTRINGLENGTH - 1] = '\0';
+    
+    //  add to variable list....
+    
+    // addTovarlist(varname, result);
+    free(argv);
+} */
