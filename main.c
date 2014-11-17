@@ -110,17 +110,33 @@ main(){
 	//Sets the initial prompt
 	prompt = malloc(MAXSTRINGLENGTH);
 	strncpy(prompt, "svsh > ", MAXSTRINGLENGTH);
+
+	char pathname[MAXSTRINGLENGTH] = "$Path";
+	char pathdef[MAXSTRINGLENGTH] = "/bin:/usr/bin";
+	syscall(SaveVar, pathname, pathdef);
+	char tokenname[MAXSTRINGLENGTH] = "$ShowTokens";
+	char tokendef[MAXSTRINGLENGTH] = "1";
+	syscall(SaveVar, tokenname, tokendef);
+
 	int i;
 	for (i = 0; i < 1024; i++){
 		i_jobs[i] = NULL;
 	}
-	strncpy(jobs, "", MAXSTRINGLENGTH);
+	//strncpy(jobs, "", MAXSTRINGLENGTH);
 
 	while(1){
 				
 		printf("%s", prompt);
+		
 		yyparse();	//the parser
 		//printf("\n");
+		syscall(GetVar, tokenname, tokendef, MAXSTRINGLENGTH);
+		if (strcmp(tokendef, "0") == 0){
+			Showtokens = 0;
+		}
+		else{
+			Showtokens = 1;
+		}
 		free_table();
 	}
 	return 0;
