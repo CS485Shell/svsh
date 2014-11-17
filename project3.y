@@ -380,13 +380,15 @@ int Assignto (char** varname, char** input_argv)
     pid_t pid;
     int state;
     int fd[2]; // file descripter to pipe data from command
+    		// The array of two file descriptors.
     char* result = (char*)malloc(sizeof(char[MAXSTRINGLENGTH]));
-    pipe(fd);
+    pipe(fd);    // pipe data
     
     //STDOUT_FILENO == fileno(stdout)
     if((pid = fork()) == 0) {
         // int dup2(int fildes, int fildes2);
         // redirect the output
+        
         dup2(fd[1], STDOUT_FILENO);
         execvp(argv[0], argv);
         exit(1);
@@ -397,6 +399,7 @@ int Assignto (char** varname, char** input_argv)
         kill(pid, SIGLKILL);
     }
     // Read the output into variables?
+    // Whatever is written to fd[1] will be read from fd[0].
     read(fd[0], result, MAXSTRINGLENGTH);
     result[MAXSTRINGLENGTH - 1] = '\0';
     
