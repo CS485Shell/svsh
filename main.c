@@ -148,7 +148,7 @@ main(){
   		// Error 
 	        } else {
 			//Job finished
-			printf("Background job #%d\t%s finished\n");
+			printf("Background job #%d\t%s finished\n", bgjobs[j]->pid, bgjobs[j]->name);
   	        	kill(bgjobs[j]->pid, SIGKILL);
 	        }
 		

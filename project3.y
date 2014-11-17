@@ -371,14 +371,14 @@ int runCommand(char** input_argv, int background)
     }
     else{
 	//i_jobs[job_place] = pid;
-	job newjob;
-	newjob.pid = pid;
-	newjob.name = input_argv[0];
+	job *newjob;
+	newjob->pid = pid;
+	newjob->name = input_argv[0];
 	int i = 0;
-	while(bgjobs[i] == NULL){
+	while(bgjobs[i] != NULL){
 		i++;
 	}
-	*bgjobs[i] = newjob;	
+	bgjobs[i] = newjob;	
     }
 }
 
