@@ -22,11 +22,17 @@ extern char* prompt;
 extern int yylex();
 extern void yyerror(char*);
 
-int job_place;
-extern int* i_jobs[1024];
-extern char* jobs[1024];
+//int job_place;
+//extern int* i_jobs[1024];
+//extern char* jobs[1024];
 
+struct Job {
+	int pid;
+	char* name;
+};
 
+typedef struct Job job;
+job* bgjobs[1024];
 
 %}
 
@@ -323,10 +329,10 @@ int ListJobs(char** input_argv)
 	//printf("Program has entered Listjobs.\n");
 
 	//store the command in the array of jobs
-	jobs[job_place] = input_argv[0];
-
+	//jobs[job_place] = input_argv[0];
+	
 	//increment the global variable
-        job_place++;
+        //job_place++;
 
 }
 
@@ -338,7 +344,7 @@ void PrintListJobs()
 	int i = 0;//iterator	
 
 	//If there are no background jobs running
-	if (jobs[i] == NULL)
+	if (bgjobs[i] == NULL)
         {
                 printf("There are no background jobs at this time.\n");
         }
@@ -370,7 +376,15 @@ int runCommand(char** input_argv, int background)
 	kill(pid, SIGKILL);
     }
     else{
-	i_jobs[job_place] = pid;	
+	//i_jobs[job_place] = pid;
+	job newjob;
+	newjob.pid = pid;
+	newjob.name = input_argv[0];
+	int i = 0;
+	while(bgjobs[i] == NULL){
+		i++;
+	}
+	*bgjobs[i] = newjob;	
     }
 }
 
