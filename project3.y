@@ -380,14 +380,12 @@ int Assignto (char** varname, char** input_argv)
     pid_t pid;
     int state;
     int fd[2]; // file descripter to pipe data from command
-    char** argv = makeArgList(input_argv);
     char* result = (char*)malloc(sizeof(char[MAXSTRINGLENGTH]));
     pipe(fd);
     
     //STDOUT_FILENO == fileno(stdout)
     if((pid = fork()) == 0) {
         // int dup2(int fildes, int fildes2);
-        // include <unistd.h>
         // redirect the output
         dup2(fd[1], STDOUT_FILENO);
         execvp(argv[0], argv);
@@ -405,6 +403,5 @@ int Assignto (char** varname, char** input_argv)
     //  add to variable list....
     
     // addTovarlist(varname, result);
-    free(argv);
 } 
 */
