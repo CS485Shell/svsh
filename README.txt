@@ -7,7 +7,6 @@ Bhushan Chitre
 Michael Carlton
 
 INCLUDED FILES
-
 README.txt		This file.
 makefile		'make' creates svsh, which calls the scanner/parser.
 project3.lex		Contains the rules and definitions of the scanner.
