@@ -364,25 +364,14 @@ int runCommand(char** input_argv, int background)
         execvp(input_argv[0], input_argv);
         exit(1);
     }
-    if(!background){
-	printf("Waiting......\n");
+    else if(!background){
+	//printf("Shell is waiting......\n");
 	waitpid(pid, &state, 0);
 	kill(pid, SIGKILL);
     }
-/*    if(background){
-      //if it is a backround job, find the job id location
-      int i = 0;
-    //  while(i < 1024 && i_jobs[i] != NULL){
-//	i++;
-//      }
-      *i_jobs[i] = pid; //and set it to the pid
-
-      //Wait for the background job to finish
-      waitpid(pid, &state, 0);
-      perror("WAITPID");
-      kill(pid, SIGKILL); //and kill it
-    }*/
-
+    else{
+	i_jobs[job_place] = pid;	
+    }
 }
 
 /*
