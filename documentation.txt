@@ -58,6 +58,10 @@ References
 
 Charles Donnelly and Richard Stallman.  "Bison The YACC-compatible Parser Generator".  Accessed Nov 11, 2014.  dinosaur.compilertools.net/bison.  November 1995.
 
+Lan Gao.  "Bison Tutorial".  Accessed Nov 8, 2014.  alumni.cs.ucr.edu/~lgao/teaching/bison.html.
+
+Lan Gao.  "FLEX Tutorial".  Accesse Nov 8, 2014.  alumni.cs.ucr.edu/~lgao/teaching/flex.html
+
 Sourceforge.net "flex: The Fast Lexical Analyzer".  Accessed Nov 11, 2014.  flex.sourceforge.net. 2008
 
 
