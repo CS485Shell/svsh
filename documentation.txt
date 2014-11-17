@@ -23,12 +23,32 @@ path bytes, NULL is returned. This behavior is considered dangerous since it all
 for buffer overflow. For portability and security reasons, the use of this function is
 deprecated.
 	The scanner and parser work closely together when sorting through the input from
-the user. 
-//////////
-/////////
-/////////
-/////////
-/////////
+the user.   The linux utility flex creates the scanner file from the project3.lex file.  
+This file includes the rules and definitions for the scanner behavior.  The linux utility 
+bison creates the parser file from the project3.y file.  This file contains the token 
+definitions as well as the definition of the context free grammar that describes when 
+a line is valid for the shell and the meaning of the line when it is valid.  Additional 
+functions are appended to the end of this file that handle invalid input errors, built in 
+commands and calling user-program commands.
+	The scanner contains definitions that use regular expressions to categorize input.  
+The definitions specify how the scanner will handle each matching case.  First, the scanner 
+looks specifically for the EOF, which indicates that scanning (and parsing) should finish.  
+When it finds EOF it will return the BYE token so that the shell behaves the same way as if 
+the user had typed "bye".  Next it looks for newline characters indicating that scanning an 
+individual line is complete.  Then, the scanner looks specifically for the following keywords: 
+defprompt, cd, listjobs,  bye, run, assignto, and <bg.  Then it looks for variables, which 
+are strings that start with a dollar sign, strings that have surrounding double quotes,  
+metacharacters, and finally words.  This order is important so that the scanner won't return 
+token types of words or metacharacters that should be part of a string or variable.  
+	The parser defines a grammar and makes use of a symbol table defined in the main 
+c source file along with a couple of functions for adding elements.  The symbol table is 
+implemented as a linked list of structs containing token value, token type, and token usage 
+variables.  As the parser sees individual pieces of the line that match a specific grammar 
+definition, it adds information in the correct order to the linked list.  In this way it 
+can build argument lists to call the appropriate function.  If the requested command is
+ simple the parser can simply perform it, such as assigning a variable.  When incorrect 
+input is detected, the parser handles it gracefully and prints out that a syntax error was
+detected.
 	Built-in commands have been included in the project3.y file for easier navigation. 
 The project3.y makeArgList() function makes the argument list correctly, where the first 
 element should always be the filename and the arguments are in input order.  There is 
