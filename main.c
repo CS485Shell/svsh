@@ -1,7 +1,7 @@
 #include "functions.h"
 
 //int Debug = 0;
-int Showtokens = 1;
+int Showtokens;
 char *prompt;
 
 //This symbol table is a linked list of struct symrec's (symbol records)
@@ -115,29 +115,46 @@ main(){
 	char pathdef[MAXSTRINGLENGTH] = "/bin:/usr/bin";
 	syscall(SaveVar, pathname, pathdef);
 	char tokenname[MAXSTRINGLENGTH] = "$ShowTokens";
-	char tokendef[MAXSTRINGLENGTH] = "1";
+	char tokendef[MAXSTRINGLENGTH] = "0";
 	syscall(SaveVar, tokenname, tokendef);
 
 	int i;
 	for (i = 0; i < 1024; i++){
-		i_jobs[i] = NULL;
+		bgjobs[i] = NULL;
 	}
 	//strncpy(jobs, "", MAXSTRINGLENGTH);
 
 	while(1){
 				
-		printf("%s", prompt);
+	    printf("%s", prompt);
 		
-		yyparse();	//the parser
-		//printf("\n");
-		syscall(GetVar, tokenname, tokendef, MAXSTRINGLENGTH);
-		if (strcmp(tokendef, "0") == 0){
-			Showtokens = 0;
-		}
-		else{
-			Showtokens = 1;
-		}
-		free_table();
+			//printf("\n");
+	    syscall(GetVar, tokenname, tokendef, MAXSTRINGLENGTH);
+	    if (strcmp(tokendef, "0") == 0){
+		Showtokens = 0;
+	    }
+	    else{
+	    	Showtokens = 1;
+	    }
+	    yyparse();	//the parser
+	    int status;
+	    int j = 0;
+	    while ( bgjobs[j] != NULL){	
+
+	        pid_t result = waitpid(bgjobs[j]->pid, &status, WNOHANG);
+	        if (result == 0) {
+  	    	// Child still alive
+	        } else if (result == -1) {
+  		// Error 
+	        } else {
+			//Job finished
+			printf("Background job #%d\t%s finished\n");
+  	        	kill(bgjobs[j]->pid, SIGKILL);
+	        }
+		
+	    	free_table();
+		j++;
+	    }
 	}
 	return 0;
 }

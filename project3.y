@@ -26,13 +26,7 @@ extern void yyerror(char*);
 //extern int* i_jobs[1024];
 //extern char* jobs[1024];
 
-struct Job {
-	int pid;
-	char* name;
-};
-
-typedef struct Job job;
-job* bgjobs[1024];
+extern job* bgjobs[];
 
 %}
 
@@ -311,7 +305,7 @@ int ChangeDir(char* directory)
 	if (!k)
 	{
 		//double check that the directory has actually changed
-		printf("The directory is now: %s\n", get_current_dir_name());	
+		//printf("The directory is now: %s\n", get_current_dir_name());	
 	}
 	else
 	{
@@ -353,9 +347,9 @@ void PrintListJobs()
 	printf("Background jobs:\n");
 
 	//while the list still has values and not NULL, print off the jobs 
-	while (i < sizeof(jobs) && jobs[i]!=NULL)
+	while (i < sizeof(bgjobs) && bgjobs[i]!=NULL)
         {
-                printf("%s     ", jobs[i]);
+                printf("%s     ", bgjobs[i]->name);
                 i++;
         }
         printf("\n");

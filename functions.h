@@ -19,11 +19,17 @@
 //extern int ChangeDir(char* directory);
 extern int Showtokens;
 extern char *prompt;
-int* i_jobs[1024];
-char* jobs[1024];
+//int* i_jobs[1024];
+//char* jobs[1024];
 //extern int input_argc;
 //extern char** input_argv;
+struct job {
+	int pid;
+	char* name;
+};
 
+typedef struct job job;
+job* bgjobs[1024];
 
 //Sharing variables functions
 int SaveVariable(char *varname, char *vardef);
