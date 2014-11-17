@@ -1,0 +1,35 @@
+Brief Description of your project
+	Algorithms used
+Description of any special features or limitations
+	If not included, it will be considered a bug.
+//////////////////////////////////////////////////////////////////////////////////////////
+	The purpose of this program is to write a shell that allows the user to interactively 
+execute Unix programs. The shell, called the Shared Variable Shell (svsh), will read 
+commands typed by the user and then execute them as well as allow users to set 
+variables that can be used in subsequent commands. Unlike typical shells, this svsh shell 
+will allow variables in one shell to be immediately accessed by another 
+shell that is running concurrently.
+	At this time, the main function hold the symbol table definitions and pushsym, 
+putsym, and free_table functions.  The symbol table is a linked list of structs where 
+each struct has the token type (an int representing metacharacter, keyword, etc.),
+value, and usage. This table can be printed to the console if the debugger value has been set
+to 1. The debug definitions has been placed in the files project3.y and project3.lex.	
+	Upon execution of "make", warnings will appear. This is a known fact and taken into 
+account when compiling and coding. This warning comes from the use of "getwd()". Since 
+getwd() does not malloc any memory, the buffer argument should be a pointer to an array
+at least the maximum path size of bytes long. If the length of the absolute pathname
+of the current working directory, including the terminating NULL byte, exceeds the maximum
+path bytes, NULL is returned. This behavior is considered dangerous since it allows room
+for buffer overflow. For portability and security reasons, the use of this function is
+deprecated.
+	The scanner and parser work closely together when sorting through the input from
+the user. 
+//////////
+/////////
+/////////
+/////////
+/////////
+	Built-in commands have been included in the project3.y file for easier navigation. 
+The project3.y makeArgList() function makes the argument list correctly, where the first 
+element should always be the filename and the arguments are in input order.  There is 
+also a companion variable that tracks how many arguments there are.
