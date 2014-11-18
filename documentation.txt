@@ -2,6 +2,8 @@ Brief Description of your project
 	Algorithms used
 Description of any special features or limitations
 	If not included, it will be considered a bug.
+Limitations:
+assignto doesn't work
 //////////////////////////////////////////////////////////////////////////////////////////
 	The purpose of this program is to write a shell that allows the user to interactively 
 execute Unix programs. The shell, called the Shared Variable Shell (svsh), will read 
