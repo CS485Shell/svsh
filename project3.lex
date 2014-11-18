@@ -33,7 +33,7 @@ newline		"\n"|"\r"
 
 {newline}	{if(DEBUGSCANNER)printf("Scanner found a newline character!\n");
 		return 0;}		
-{defprompt}	{if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
+{defprompt}	{//if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		if(DEBUGSCANNER)printf("Scanner found defprompt!\n");
 		//if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		yylval.str_val = (char*) malloc(yyleng); 
