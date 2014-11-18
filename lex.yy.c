@@ -794,7 +794,7 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 36 "project3.lex"
-{if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
+{//if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		if(DEBUGSCANNER)printf("Scanner found defprompt!\n");
 		//if(Showtokens)printf("Token type = keyword\tToken = %s\t\t", yytext);
 		yylval.str_val = (char*) malloc(yyleng); 

@@ -1,0 +1,6 @@
+run ls
+run ls -lat
+run wc project3.y
+run wc main.c <bg>
+run ls <bg>
+run cat runtests.txt

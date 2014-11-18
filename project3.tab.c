@@ -463,8 +463,8 @@ static const yytype_uint8 yyrline[] =
        0,    44,    44,    45,    45,    47,    55,    56,    57,    58,
       59,    60,    61,    62,    63,    64,    65,    66,    67,    68,
       69,    70,    71,    72,    73,    74,    75,    76,    79,    84,
-      90,    97,   104,   110,   126,   133,   136,   156,   174,   186,
-     204,   210,   211,   214,   218,   222
+      90,    97,   104,   110,   126,   140,   143,   163,   181,   193,
+     211,   217,   218,   221,   225,   229
 };
 #endif
 
@@ -1417,16 +1417,23 @@ yyreduce:
   case 34:
 #line 127 "project3.y" /* yacc.c:1646  */
     {if(DEBUGTOKENS)printf("Parser got an assignto line\n");
-		  //if(Showtokens)printf("Usage = assignto\n");
 		  sym_table = pushsym(VARIABLE, (yyvsp[-2].str_val), "variable");
 		  sym_table = pushsym(ASSIGNTO, (yyvsp[-3].str_val), "assignto");
 		  if(Showtokens)printTokens();
+		  int input_argc = 0;
+		  char** input_argv = malloc(MAXARGNUMS * sizeof(char*)); 
+		  symrec* ptr = sym_table;
+		  //Argument list order should be correct now 
+		  input_argv = makeArgList(&input_argc, input_argv);
+
+		  //Doesn't matter if it's a new variable or not
+		  Assignto((yyvsp[-2].str_val), input_argv);
 		 }
-#line 1426 "project3.tab.c" /* yacc.c:1646  */
+#line 1433 "project3.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 137 "project3.y" /* yacc.c:1646  */
+#line 144 "project3.y" /* yacc.c:1646  */
     {if(DEBUGTOKENS)printf("Parser saw a run without arguments, BG option\n");
 		  //if(Showtokens)printf("Usage = run\n");
 		  sym_table = pushsym(RUN, (yyvsp[-1].str_val), "run");
@@ -1446,11 +1453,11 @@ yyreduce:
 		  //fork();
 		  //execve(input_argv[0], input_argv);
 		 }
-#line 1450 "project3.tab.c" /* yacc.c:1646  */
+#line 1457 "project3.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 157 "project3.y" /* yacc.c:1646  */
+#line 164 "project3.y" /* yacc.c:1646  */
     {if(DEBUGTOKENS)printf("Parser saw a run with BG option, no arguments\n");		  
 		  sym_table = pushsym(RUN, (yyvsp[-2].str_val), "run");
 		  sym_table = putsym(BG, (yyvsp[-2].str_val), "<bg>");
@@ -1468,11 +1475,11 @@ yyreduce:
 		  ListJobs(input_argv);
 		  runCommand(input_argv, 1);
 		 }
-#line 1472 "project3.tab.c" /* yacc.c:1646  */
+#line 1479 "project3.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 175 "project3.y" /* yacc.c:1646  */
+#line 182 "project3.y" /* yacc.c:1646  */
     {if(DEBUGTOKENS)printf("Parser saw a run without BG option\n");
 		  sym_table = pushsym(RUN, (yyvsp[-2].str_val), "run");
 		  //Building the argument list
@@ -1484,11 +1491,11 @@ yyreduce:
 		  if(Showtokens)printTokens();
 		  runCommand(input_argv, 0);
 		 }
-#line 1488 "project3.tab.c" /* yacc.c:1646  */
+#line 1495 "project3.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 187 "project3.y" /* yacc.c:1646  */
+#line 194 "project3.y" /* yacc.c:1646  */
     {if(DEBUGTOKENS)printf("Parser saw a run with a BG option\n");
 		  sym_table = pushsym(RUN, (yyvsp[-3].str_val), "run");
 		  sym_table = putsym(BG, (yyvsp[-3].str_val), "<bg>");
@@ -1505,43 +1512,45 @@ yyreduce:
                   ListJobs(input_argv);
                   runCommand(input_argv, 1);
 		 }
-#line 1509 "project3.tab.c" /* yacc.c:1646  */
+#line 1516 "project3.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 205 "project3.y" /* yacc.c:1646  */
+#line 212 "project3.y" /* yacc.c:1646  */
     {
 		 sym_table = putsym(WORD, (yyvsp[0].str_val), "directory_name");
 		}
-#line 1517 "project3.tab.c" /* yacc.c:1646  */
+#line 1524 "project3.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 215 "project3.y" /* yacc.c:1646  */
+#line 222 "project3.y" /* yacc.c:1646  */
     {
 		 sym_table = putsym(WORD, (yyvsp[0].str_val), "arg");
 		}
-#line 1525 "project3.tab.c" /* yacc.c:1646  */
+#line 1532 "project3.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 219 "project3.y" /* yacc.c:1646  */
+#line 226 "project3.y" /* yacc.c:1646  */
     { 
 		 sym_table = putsym(STRING, (yyvsp[0].str_val), "arg");
 		}
-#line 1533 "project3.tab.c" /* yacc.c:1646  */
+#line 1540 "project3.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 223 "project3.y" /* yacc.c:1646  */
+#line 230 "project3.y" /* yacc.c:1646  */
     { 
-		 sym_table = putsym(VARIABLE, (yyvsp[0].str_val), "arg");
+		 char tempdef[MAXSTRINGLENGTH] = "";
+		 syscall(GetVar, (yyvsp[0].str_val), tempdef, MAXSTRINGLENGTH);
+		 sym_table = putsym(VARIABLE, tempdef, "arg");
 		}
-#line 1541 "project3.tab.c" /* yacc.c:1646  */
+#line 1550 "project3.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1545 "project3.tab.c" /* yacc.c:1646  */
+#line 1554 "project3.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1769,7 +1778,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 227 "project3.y" /* yacc.c:1906  */
+#line 236 "project3.y" /* yacc.c:1906  */
 
 
 //Prints all the symbols seen in order
@@ -1813,19 +1822,34 @@ char** makeArgList(int* input_argc, char** input_argv){
 	while(ptr!=NULL){
 	    if(strcmp(ptr->usage, "directory_name") == 0){
 		input_argv[*input_argc] = malloc(MAXSTRINGLENGTH);
-		strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
+		if(ptr->type == VARIABLE){
+		    char* vardef[MAXSTRINGLENGTH];
+		    //Get the variable definition from kernal space
+		    syscall(GetVar, ptr->value, vardef, MAXSTRINGLENGTH); 
+		    strncpy(input_argv[*input_argc], vardef, MAXSTRINGLENGTH);
+		}
+		else{
+		    strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
+		}
 		(*input_argc)++;	
 	    }
-	    else if(strcmp(ptr->usage, "arg") == 0){
+	    if(strcmp(ptr->usage, "arg") == 0){
 		input_argv[*input_argc] = malloc(MAXSTRINGLENGTH);
-		strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
-		//strcat(
+		if(ptr->type == VARIABLE){
+		    char* vardef[MAXSTRINGLENGTH];
+		    //Get the variable definition from kernal space
+		    syscall(GetVar, ptr->value, vardef, MAXSTRINGLENGTH);
+		    strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
+		}
+		else{
+		    strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
+		}
 		(*input_argc)++;
 	    }
 	    ptr = ptr->next;
 		
 	}
-
+	ptr = sym_table;
 	if(DEBUGARGV){
 	    int i;
 	    for (i = 0; i < *input_argc; i++){
@@ -1928,37 +1952,22 @@ int runCommand(char** input_argv, int background)
     }
 }
 
-/*
-int Assignto (char** varname, char** input_argv)
+
+int Assignto (char* varname, char** input_argv)
 {
-    pid_t pid;
-    int state;
-    int fd[2]; // file descripter to pipe data from command
-    		// The array of two file descriptors.
-    char* result = (char*)malloc(sizeof(char[MAXSTRINGLENGTH]));
-    pipe(fd);    // pipe data
-    
-    //STDOUT_FILENO == fileno(stdout)
+    int pid; 
     if((pid = fork()) == 0) {
-        // int dup2(int fildes, int fildes2);
-        // redirect the output
-        
-        dup2(fd[1], STDOUT_FILENO);
-        execvp(argv[0], argv);
+	execvp(input_argv[0], input_argv);
         exit(1);
-        
+       
     }
-    if(waitpid(pid, &state, 0) , 0) {
+    int state;
+    if(waitpid(pid, &state, 0) < 0) {
         perror("WAITPID");
-        kill(pid, SIGLKILL);
+        kill(pid, SIGKILL);
     }
-    // Read the output into variables?
-    // Whatever is written to fd[1] will be read from fd[0].
-    read(fd[0], result, MAXSTRINGLENGTH);
-    result[MAXSTRINGLENGTH - 1] = '\0';
-    
-    //  add to variable list....
-    
-    // addTovarlist(varname, result);
+    char* result[MAXSTRINGLENGTH];
+   //  add to variable list....
+    syscall(SaveVar, input_argv[0], result);
 } 
-*/
+

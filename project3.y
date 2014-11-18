@@ -125,10 +125,17 @@ run_command:	BYE
 		 }
 		|ASSIGNTO VARIABLE filename arg_list
 		 {if(DEBUGTOKENS)printf("Parser got an assignto line\n");
-		  //if(Showtokens)printf("Usage = assignto\n");
 		  sym_table = pushsym(VARIABLE, $2, "variable");
 		  sym_table = pushsym(ASSIGNTO, $1, "assignto");
 		  if(Showtokens)printTokens();
+		  int input_argc = 0;
+		  char** input_argv = malloc(MAXARGNUMS * sizeof(char*)); 
+		  symrec* ptr = sym_table;
+		  //Argument list order should be correct now 
+		  input_argv = makeArgList(&input_argc, input_argv);
+
+		  //Doesn't matter if it's a new variable or not
+		  Assignto($2, input_argv);
 		 }
 		|run
 		;
@@ -269,19 +276,34 @@ char** makeArgList(int* input_argc, char** input_argv){
 	while(ptr!=NULL){
 	    if(strcmp(ptr->usage, "directory_name") == 0){
 		input_argv[*input_argc] = malloc(MAXSTRINGLENGTH);
-		strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
+		if(ptr->type == VARIABLE){
+		    char* vardef[MAXSTRINGLENGTH];
+		    //Get the variable definition from kernal space
+		    syscall(GetVar, ptr->value, vardef, MAXSTRINGLENGTH); 
+		    strncpy(input_argv[*input_argc], vardef, MAXSTRINGLENGTH);
+		}
+		else{
+		    strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
+		}
 		(*input_argc)++;	
 	    }
-	    else if(strcmp(ptr->usage, "arg") == 0){
+	    if(strcmp(ptr->usage, "arg") == 0){
 		input_argv[*input_argc] = malloc(MAXSTRINGLENGTH);
-		strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
-		//strcat(
+		if(ptr->type == VARIABLE){
+		    char* vardef[MAXSTRINGLENGTH];
+		    //Get the variable definition from kernal space
+		    syscall(GetVar, ptr->value, vardef, MAXSTRINGLENGTH);
+		    strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
+		}
+		else{
+		    strncpy(input_argv[*input_argc], ptr->value, strlen(ptr->value));
+		}
 		(*input_argc)++;
 	    }
 	    ptr = ptr->next;
 		
 	}
-
+	ptr = sym_table;
 	if(DEBUGARGV){
 	    int i;
 	    for (i = 0; i < *input_argc; i++){
@@ -385,36 +407,21 @@ int runCommand(char** input_argv, int background)
 }
 
 
-int Assignto (char** varname, char** input_argv)
+int Assignto (char* varname, char** input_argv)
 {
-    pid_t pid;
-    int state;
-    int fd[2]; // file descripter to pipe data from command
-    		// The array of two file descriptors.
-    char* result = (char*)malloc(sizeof(char[MAXSTRINGLENGTH]));
-    pipe(fd);    // pipe data
-    
-    //STDOUT_FILENO == fileno(stdout)
+    int pid; 
     if((pid = fork()) == 0) {
-        // int dup2(int fildes, int fildes2);
-        // redirect the output
-        
-        dup2(fd[1], STDOUT_FILENO);
-        execvp(argv[0], argv);
+	execvp(input_argv[0], input_argv);
         exit(1);
-        
+       
     }
-    if(waitpid(pid, &state, 0) , 0) {
+    int state;
+    if(waitpid(pid, &state, 0) < 0) {
         perror("WAITPID");
-        kill(pid, SIGLKILL);
+        kill(pid, SIGKILL);
     }
-    // Read the output into variables?
-    // Whatever is written to fd[1] will be read from fd[0].
-    read(fd[0], result, MAXSTRINGLENGTH);
-    result[MAXSTRINGLENGTH - 1] = '\0';
-    
-    //  add to variable list....
-    
-    // addTovarlist(varname, result);
+    char* result[MAXSTRINGLENGTH];
+   //  add to variable list....
+    syscall(SaveVar, input_argv[0], result);
 } 
 
