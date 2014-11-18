@@ -155,6 +155,7 @@ main(){
 	    	free_table();
 		j++;
 	    }
+	    printf("\n");
 	}
 	return 0;
 }

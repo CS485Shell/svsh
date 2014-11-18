@@ -221,7 +221,9 @@ argument:	WORD
 		} 
 		|VARIABLE
 		{ 
-		 sym_table = putsym(VARIABLE, $1, "arg");
+		 char tempdef[MAXSTRINGLENGTH] = "";
+		 syscall(GetVar, $1, tempdef, MAXSTRINGLENGTH);
+		 sym_table = putsym(VARIABLE, tempdef, "arg");
 		}
 		;
 %%
@@ -382,7 +384,7 @@ int runCommand(char** input_argv, int background)
     }
 }
 
-/*
+
 int Assignto (char** varname, char** input_argv)
 {
     pid_t pid;
@@ -415,4 +417,4 @@ int Assignto (char** varname, char** input_argv)
     
     // addTovarlist(varname, result);
 } 
-*/
+
