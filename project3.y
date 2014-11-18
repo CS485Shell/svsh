@@ -292,7 +292,7 @@ char** makeArgList(int* input_argc, char** input_argv){
 int ChangeDir(char* directory)
 {
 	int k = 0;
-   	printf("Program ChangeDir has been entered. \n");
+   	//printf("Program ChangeDir has been entered. \n");
 
 	//buffer to store the directory_name
 	char* buf = malloc(MAXSTRINGLENGTH);
@@ -347,7 +347,7 @@ void PrintListJobs()
 	printf("Background jobs:\n");
 
 	//while the list still has values and not NULL, print off the jobs 
-	while (i < sizeof(bgjobs) && bgjobs[i]!=NULL)
+	while (i < sizeof(bgjobs) && bgjobs[i-1]!=NULL)
         {
                 printf("%s     ", bgjobs[i]->name);
                 i++;

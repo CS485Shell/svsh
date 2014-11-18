@@ -139,7 +139,7 @@ main(){
 	    yyparse();	//the parser
 	    int status;
 	    int j = 0;
-	    while ( bgjobs[j] != NULL){	
+	    while ( bgjobs[j-1] != NULL){	
 
 	        pid_t result = waitpid(bgjobs[j]->pid, &status, WNOHANG);
 	        if (result == 0) {
@@ -148,7 +148,7 @@ main(){
   		// Error 
 	        } else {
 			//Job finished
-			printf("Background job #%d\t%s finished\n", bgjobs[j]->pid, bgjobs[j]->name);
+			printf("Background job # %d \t %s finished\n", bgjobs[j]->pid, bgjobs[j]->name);
   	        	kill(bgjobs[j]->pid, SIGKILL);
 	        }
 		
